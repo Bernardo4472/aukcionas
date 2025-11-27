@@ -111,7 +111,7 @@ function login_user($el_pastas, $slaptazodis) {
  */
 function logout_user() {
     if (is_logged_in()) {
-        $user = get_current_user();
+        $user = get_logged_in_user();
         log_audit($user['id'], 'Atsijungimas', 'Vartotojas atsijungė: ' . $user['el_pastas']);
     }
 

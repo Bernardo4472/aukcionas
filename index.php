@@ -17,7 +17,7 @@ require_login();
 update_auction_statuses();
 
 // Gauti visus aktyvius aukcionus
-$user = get_current_user();
+$user = get_logged_in_user();
 $include_hidden = has_role('admin'); // Admin mato visus aukcionus
 $auctions = get_active_auctions($include_hidden);
 

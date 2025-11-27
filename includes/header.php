@@ -33,7 +33,7 @@
                     <div class="nav-user">
                         <span>👤 <?php echo htmlspecialchars($_SESSION['vardas']); ?></span>
                         <span class="balance">💰 <?php
-                            $user = get_current_user();
+                            $user = get_logged_in_user();
                             echo format_money($user['balansas']);
                         ?></span>
                         <a href="logout.php" class="btn-logout">Atsijungti</a>

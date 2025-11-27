@@ -47,7 +47,7 @@ function is_logged_in() {
  * Gauti dabartinio vartotojo informaciją
  * @return array|null
  */
-function get_current_user() {
+function get_logged_in_user() {
     global $conn;
 
     if (!is_logged_in()) {
@@ -73,7 +73,7 @@ function get_current_user() {
  * @return bool
  */
 function has_role($required_role) {
-    $user = get_current_user();
+    $user = get_logged_in_user();
 
     if (!$user) {
         return false;
@@ -93,7 +93,7 @@ function has_role($required_role) {
  * @return bool
  */
 function has_any_role($roles) {
-    $user = get_current_user();
+    $user = get_logged_in_user();
 
     if (!$user) {
         return false;

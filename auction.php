@@ -30,7 +30,7 @@ if (!$auction) {
     exit();
 }
 
-$user = get_current_user();
+$user = get_logged_in_user();
 $is_owner = $auction['savininko_id'] == $user['id'];
 
 // Patikrinti, ar vartotojas gali matyti paslėptą aukcioną

@@ -13,7 +13,7 @@ require_once 'includes/functions.php';
 // Patikrinti, ar vartotojas prisijungęs
 require_login();
 
-$user = get_current_user();
+$user = get_logged_in_user();
 $transactions = get_user_transactions($user['id']);
 
 $page_title = 'Piniginė';
