@@ -96,12 +96,12 @@ CREATE TABLE IF NOT EXISTS audit_log (
 
 -- Demonstraciniai vartotojai (visi slaptažodžiai: admin123, acc123, user123)
 INSERT INTO vartotojai (vardas, el_pastas, slaptazodis, role, balansas) VALUES
-('Administratorius', 'admin@ktu.lt', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 5000.00),
-('Buhalteris', 'accountant@ktu.lt', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'accountant', 3000.00),
-('Vartotojas', 'user@ktu.lt', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user', 1000.00),
-('Moderatorius', 'moderator@ktu.lt', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'moderator', 2000.00),
-('Jonas Jonaitis', 'jonas@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user', 500.00),
-('Petras Petraitis', 'petras@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user', 750.00);
+('Administratorius', 'admin@ktu.lt', '$2y$12$3HZY.Pt69poo3EgJiuH6cOC5lXpLUItrtrlQi7VMnW0eoNtgBsV8e', 'admin', 5000.00),
+('Buhalteris', 'accountant@ktu.lt', '$2y$12$yAy1HeloS29BYAjeBwDmSO7R2wr4r/cCmXcYMymldpw8IsZaZ7O2S', 'accountant', 3000.00),
+('Vartotojas', 'user@ktu.lt', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 1000.00),
+('Moderatorius', 'moderator@ktu.lt', '$2y$12$3HZY.Pt69poo3EgJiuH6cOC5lXpLUItrtrlQi7VMnW0eoNtgBsV8e', 'moderator', 2000.00),
+('Jonas Jonaitis', 'jonas@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 500.00),
+('Petras Petraitis', 'petras@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 750.00);
 
 -- Demonstraciniai aukcionai
 INSERT INTO aukcionai (pavadinimas, aprasymas, pradine_kaina, dabartine_kaina, bid_step, pradzios_laikas, pabaigos_laikas, pasleptas, vartotojo_id, busena) VALUES
