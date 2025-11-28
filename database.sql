@@ -92,6 +92,80 @@ CREATE TABLE IF NOT EXISTS audit_log (
     INDEX idx_data_laikas (data_laikas)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Aukciono nuotraukų lentelė
+CREATE TABLE IF NOT EXISTS aukciono_nuotraukos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    aukciono_id INT NOT NULL,
+    failo_pavadinimas VARCHAR(255) NOT NULL,
+    originalus_pavadinimas VARCHAR(255) NOT NULL,
+    ikelimo_data DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (aukciono_id) REFERENCES aukcionai(id) ON DELETE CASCADE,
+    INDEX idx_aukciono_id (aukciono_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Žinučių lentelė
+CREATE TABLE IF NOT EXISTS zinutes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    siuntejas_id INT NOT NULL,
+    gavejas_id INT NOT NULL,
+    aukciono_id INT,
+    tema VARCHAR(200) NOT NULL,
+    tekstas TEXT NOT NULL,
+    perskaitytas BOOLEAN DEFAULT FALSE,
+    siuntimo_laikas DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (siuntejas_id) REFERENCES vartotojai(id) ON DELETE CASCADE,
+    FOREIGN KEY (gavejas_id) REFERENCES vartotojai(id) ON DELETE CASCADE,
+    FOREIGN KEY (aukciono_id) REFERENCES aukcionai(id) ON DELETE SET NULL,
+    INDEX idx_gavejas (gavejas_id),
+    INDEX idx_siuntejas (siuntejas_id),
+    INDEX idx_perskaitytas (perskaitytas)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Atsiliepimų lentelė
+CREATE TABLE IF NOT EXISTS atsiliepimai (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nuo_vartotojo_id INT NOT NULL,
+    apie_vartotoja_id INT NOT NULL,
+    aukciono_id INT,
+    ivertinimas TINYINT NOT NULL CHECK (ivertinimas BETWEEN 1 AND 5),
+    komentaras TEXT,
+    tipas ENUM('teigiam','neigiamas','neutralus') NOT NULL,
+    data_laikas DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (nuo_vartotojo_id) REFERENCES vartotojai(id) ON DELETE CASCADE,
+    FOREIGN KEY (apie_vartotoja_id) REFERENCES vartotojai(id) ON DELETE CASCADE,
+    FOREIGN KEY (aukciono_id) REFERENCES aukcionai(id) ON DELETE SET NULL,
+    INDEX idx_apie_vartotoja (apie_vartotoja_id),
+    INDEX idx_tipas (tipas)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- IP blokavimų lentelė
+CREATE TABLE IF NOT EXISTS ip_blokavimai (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ip_adresas VARCHAR(45) NOT NULL,
+    priezastis TEXT,
+    užblokavo_admin_id INT,
+    blokavimo_data DATETIME DEFAULT CURRENT_TIMESTAMP,
+    galioja_iki DATETIME,
+    aktyvus BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (užblokavo_admin_id) REFERENCES vartotojai(id) ON DELETE SET NULL,
+    INDEX idx_ip_adresas (ip_adresas),
+    INDEX idx_aktyvus (aktyvus)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- IP veiklos žurnalo lentelė
+CREATE TABLE IF NOT EXISTS ip_veikla (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    vartotojo_id INT,
+    ip_adresas VARCHAR(45) NOT NULL,
+    veiksmas VARCHAR(100) NOT NULL,
+    aprasymas TEXT,
+    data_laikas DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (vartotojo_id) REFERENCES vartotojai(id) ON DELETE SET NULL,
+    INDEX idx_ip_adresas (ip_adresas),
+    INDEX idx_vartotojo_id (vartotojo_id),
+    INDEX idx_data_laikas (data_laikas)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Demonstraciniai duomenys
 
 -- Demonstraciniai vartotojai (visi slaptažodžiai: admin123, acc123, user123)

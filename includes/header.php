@@ -14,9 +14,24 @@
             </div>
             <div class="nav-menu">
                 <?php if (is_logged_in()): ?>
+                    <?php
+                    // Load extended functions for message count
+                    if (!function_exists('get_unread_messages_count')) {
+                        require_once __DIR__ . '/extended_functions.php';
+                    }
+                    $unread = get_unread_messages_count($_SESSION['user_id']);
+                    ?>
                     <a href="index.php">Aukcionai</a>
                     <a href="create_auction.php">Sukurti aukcioną</a>
                     <a href="wallet.php">Piniginė</a>
+                    <a href="messages.php">
+                        📬 Žinutės
+                        <?php if ($unread > 0): ?>
+                            <span style="background: #e74c3c; color: white; padding: 2px 6px; border-radius: 10px; font-size: 0.75rem;">
+                                <?php echo $unread; ?>
+                            </span>
+                        <?php endif; ?>
+                    </a>
 
                     <?php if (has_role('accountant')): ?>
                         <a href="accountant.php">Buhalterija</a>
