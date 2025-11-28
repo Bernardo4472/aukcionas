@@ -9,6 +9,7 @@ session_start();
 require_once 'includes/db.php';
 require_once 'includes/auth.php';
 require_once 'includes/functions.php';
+require_once 'includes/extended_functions.php';
 
 // Patikrinti, ar vartotojas prisijungęs
 require_login();
@@ -74,13 +75,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_comment'])) {
 $bids = get_auction_bids($auction_id);
 $comments = get_auction_comments($auction_id);
 $highest_bid = get_highest_bid($auction_id);
+$photos = get_auction_photos($auction_id);
 
 $page_title = htmlspecialchars($auction['pavadinimas']);
 include 'includes/header.php';
 ?>
 
-<div style="margin-bottom: 20px;">
+<div style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
     <a href="index.php" class="btn btn-secondary">← Grįžti į sąrašą</a>
+
+    <?php if ($is_owner): ?>
+        <a href="edit_auction.php?id=<?php echo $auction_id; ?>" class="btn btn-primary">
+            ✏️ Redaguoti aukcioną
+        </a>
+    <?php endif; ?>
+
+    <?php if (!$is_owner): ?>
+        <a href="messages.php?tab=new&to=<?php echo $auction['savininko_id']; ?>&subject=Dėl aukciono: <?php echo urlencode($auction['pavadinimas']); ?>&auction=<?php echo $auction_id; ?>"
+           class="btn btn-primary">
+            📧 Susisiekti su pardavėju
+        </a>
+        <a href="profile.php?id=<?php echo $auction['savininko_id']; ?>" class="btn btn-secondary">
+            👤 Pardavėjo profilis
+        </a>
+    <?php endif; ?>
 </div>
 
 <!-- Aukciono detalės -->
@@ -94,11 +112,30 @@ include 'includes/header.php';
     <h2><?php echo htmlspecialchars($auction['pavadinimas']); ?></h2>
 
     <div style="color: #666; margin-bottom: 20px;">
-        <strong>Savininkas:</strong> <?php echo htmlspecialchars($auction['savininkas']); ?>
+        <strong>Savininkas:</strong> <?php echo htmlspecialchars($auction['savininkas']); ?> (ID: <?php echo $auction['savininko_id']; ?>)
         <?php if ($is_owner): ?>
             <span style="background: #3498db; color: white; padding: 3px 8px; border-radius: 3px; margin-left: 10px;">Jūsų aukcionas</span>
         <?php endif; ?>
     </div>
+
+    <!-- Nuotraukų galerija -->
+    <?php if (!empty($photos)): ?>
+        <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <h4 style="color: #667eea; margin-bottom: 15px;">📸 Nuotraukos (<?php echo count($photos); ?>)</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
+                <?php foreach ($photos as $photo): ?>
+                    <div style="border: 2px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+                        <a href="uploads/<?php echo htmlspecialchars($photo['failo_pavadinimas']); ?>" target="_blank">
+                            <img src="uploads/<?php echo htmlspecialchars($photo['failo_pavadinimas']); ?>"
+                                 alt="<?php echo htmlspecialchars($photo['originalus_pavadinimas']); ?>"
+                                 style="width: 100%; height: 250px; object-fit: cover; display: block; cursor: pointer;"
+                                 title="Spustelėkite, kad pamatytumėte visą dydį">
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    <?php endif; ?>
 
     <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
         <h4 style="color: #667eea; margin-bottom: 10px;">Aprašymas:</h4>

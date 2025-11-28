@@ -9,6 +9,7 @@ session_start();
 require_once 'includes/db.php';
 require_once 'includes/auth.php';
 require_once 'includes/functions.php';
+require_once 'includes/extended_functions.php';
 
 // Patikrinti, ar vartotojas prisijungęs
 require_login();
@@ -60,6 +61,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->execute()) {
             $auction_id = $conn->insert_id;
 
+            // Įkelti nuotraukas, jei yra
+            if (isset($_FILES['photos']) && !empty($_FILES['photos']['name'][0])) {
+                $photo_count = count($_FILES['photos']['name']);
+
+                for ($i = 0; $i < $photo_count; $i++) {
+                    if ($_FILES['photos']['error'][$i] === UPLOAD_ERR_OK) {
+                        $file = [
+                            'name' => $_FILES['photos']['name'][$i],
+                            'type' => $_FILES['photos']['type'][$i],
+                            'tmp_name' => $_FILES['photos']['tmp_name'][$i],
+                            'error' => $_FILES['photos']['error'][$i],
+                            'size' => $_FILES['photos']['size'][$i]
+                        ];
+                        upload_auction_photo($auction_id, $file);
+                    }
+                }
+            }
+
             // Įrašyti auditą
             log_audit($user_id, 'Aukciono sukūrimas', 'Sukurtas naujas aukcionas: ' . $pavadinimas . ' (#' . $auction_id . ')');
 
@@ -81,7 +100,7 @@ include 'includes/header.php';
 <h2>Sukurti naują aukcioną</h2>
 
 <div class="auction-details" style="max-width: 800px; margin: 0 auto;">
-    <form method="POST" action="" id="auctionForm">
+    <form method="POST" action="" id="auctionForm" enctype="multipart/form-data">
         <div class="form-group">
             <label for="pavadinimas">Pavadinimas <span style="color: red;">*</span></label>
             <input
@@ -161,6 +180,20 @@ include 'includes/header.php';
                     required
                     value="<?php echo isset($_POST['pabaigos_laikas']) ? $_POST['pabaigos_laikas'] : date('Y-m-d\TH:i', strtotime('+7 days')); ?>">
             </div>
+        </div>
+
+        <div class="form-group">
+            <label for="photos">Nuotraukos (neprivaloma)</label>
+            <input
+                type="file"
+                id="photos"
+                name="photos[]"
+                class="form-control"
+                accept="image/jpeg,image/jpg,image/png,image/gif"
+                multiple>
+            <small style="color: #666; display: block; margin-top: 5px;">
+                Galite įkelti kelias nuotraukas. Leidžiami formatai: JPG, PNG, GIF. Maksimalus dydis: 5MB kiekvienai.
+            </small>
         </div>
 
         <div class="form-group">
