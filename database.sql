@@ -175,7 +175,15 @@ INSERT INTO vartotojai (vardas, el_pastas, slaptazodis, role, balansas) VALUES
 ('Vartotojas', 'user@ktu.lt', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 1000.00),
 ('Moderatorius', 'moderator@ktu.lt', '$2y$12$3HZY.Pt69poo3EgJiuH6cOC5lXpLUItrtrlQi7VMnW0eoNtgBsV8e', 'moderator', 2000.00),
 ('Jonas Jonaitis', 'jonas@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 500.00),
-('Petras Petraitis', 'petras@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 750.00);
+('Petras Petraitis', 'petras@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 750.00),
+-- Papildomi testavimo vartotojai (slaptažodis: user123)
+('Ona Onutė', 'ona@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 1200.00),
+('Antanas Antanaitis', 'antanas@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 800.00),
+('Greta Gretaitė', 'greta@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 950.00),
+('Lukas Lukauskas', 'lukas@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 1500.00),
+('Ieva Ievaitė', 'ieva@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 2000.00),
+('Darius Dariūnas', 'darius@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 650.00),
+('Rasa Rasaitė', 'rasa@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 1100.00);
 
 -- Demonstraciniai aukcionai
 INSERT INTO aukcionai (pavadinimas, aprasymas, pradine_kaina, dabartine_kaina, bid_step, pradzios_laikas, pabaigos_laikas, pasleptas, vartotojo_id, busena) VALUES
@@ -216,3 +224,87 @@ INSERT INTO audit_log (vartotojo_id, veiksmas, aprasymas) VALUES
 (1, 'Prisijungimas', 'Administratorius prisijungė prie sistemos'),
 (2, 'Balansas papildytas', 'Buhalteris papildė vartotojo #3 balansą 500 EUR'),
 (4, 'Komentaras ištrintas', 'Moderatorius ištrynė netinkamą komentarą #15');
+
+-- Demonstracinė IP veikla (įvairūs scenarijai)
+INSERT INTO ip_veikla (vartotojo_id, ip_adresas, veiksmas, aprasymas, data_laikas) VALUES
+-- Scenario 1: Normalus vieno vartotojo aktyvumas iš namų
+(3, '192.168.1.100', 'Prisijungimas', 'Sėkmingas prisijungimas: user@ktu.lt', '2025-12-01 09:00:00'),
+(3, '192.168.1.100', 'Aukciono kūrimas', 'Sukurtas aukcionas: iPhone 15 Pro Max (#1)', '2025-12-01 09:15:00'),
+(3, '192.168.1.100', 'Statymas', 'Pastatė 2100.00 € aukcione #3', '2025-12-01 10:30:00'),
+(3, '192.168.1.100', 'Komentaras', 'Parašė komentarą aukcione #1', '2025-12-01 11:00:00'),
+
+-- Scenario 2: Šeima/ofisas - keli vartotojai iš to paties IP
+(5, '78.56.123.45', 'Registracija', 'Nauja paskyra: Jonas Jonaitis (jonas@example.com)', '2025-11-28 14:20:00'),
+(5, '78.56.123.45', 'Prisijungimas', 'Sėkmingas prisijungimas: jonas@example.com', '2025-11-29 08:30:00'),
+(5, '78.56.123.45', 'Statymas', 'Pastatė 850.00 € aukcione #1', '2025-11-29 09:45:00'),
+(6, '78.56.123.45', 'Prisijungimas', 'Sėkmingas prisijungimas: petras@example.com', '2025-11-29 15:00:00'),
+(6, '78.56.123.45', 'Statymas', 'Pastatė 650.00 € aukcione #2', '2025-11-29 15:30:00'),
+(7, '78.56.123.45', 'Prisijungimas', 'Sėkmingas prisijungimas: ona@example.com', '2025-11-30 10:00:00'),
+(7, '78.56.123.45', 'Žinutė', 'Išsiuntė žinutę vartotojui #5: Klausimas apie prekę', '2025-11-30 10:15:00'),
+
+-- Scenario 3: Vartotojas keliaujantis - keli IP adresai
+(8, '85.206.45.12', 'Prisijungimas', 'Sėkmingas prisijungimas: antanas@example.com', '2025-11-25 07:00:00'),
+(8, '85.206.45.12', 'Aukciono kūrimas', 'Sukurtas aukcionas: Samsung Galaxy S24 (#2)', '2025-11-25 07:30:00'),
+(8, '92.61.178.234', 'Prisijungimas', 'Sėkmingas prisijungimas: antanas@example.com', '2025-11-26 19:00:00'),
+(8, '92.61.178.234', 'Komentaras', 'Parašė komentarą aukcione #2', '2025-11-26 19:15:00'),
+(8, '188.126.73.89', 'Prisijungimas', 'Sėkmingas prisijungimas: antanas@example.com', '2025-11-28 12:00:00'),
+(8, '188.126.73.89', 'Statymas', 'Pastatė 920.00 € aukcione #6', '2025-11-28 12:30:00'),
+
+-- Scenario 4: KTU tinklas - studentai
+(9, '193.219.28.45', 'Registracija', 'Nauja paskyra: Greta Gretaitė (greta@example.com)', '2025-11-20 13:00:00'),
+(9, '193.219.28.45', 'Prisijungimas', 'Sėkmingas prisijungimas: greta@example.com', '2025-11-21 10:00:00'),
+(9, '193.219.28.45', 'Statymas', 'Pastatė 410.00 € aukcione #4', '2025-11-21 11:00:00'),
+(10, '193.219.28.45', 'Registracija', 'Nauja paskyra: Lukas Lukauskas (lukas@example.com)', '2025-11-22 09:30:00'),
+(10, '193.219.28.45', 'Prisijungimas', 'Sėkmingas prisijungimas: lukas@example.com', '2025-11-22 14:00:00'),
+(10, '193.219.28.45', 'Komentaras', 'Parašė komentarą aukcione #3', '2025-11-22 14:15:00'),
+
+-- Scenario 5: Įtartinas aktyvumas - daug nesėkmingų prisijungimų
+(NULL, '45.142.212.61', 'Nesėkmingas prisijungimas', 'Bandymas prisijungti su: admin@ktu.lt', '2025-11-30 02:15:23'),
+(NULL, '45.142.212.61', 'Nesėkmingas prisijungimas', 'Bandymas prisijungti su: admin@ktu.lt', '2025-11-30 02:15:45'),
+(NULL, '45.142.212.61', 'Nesėkmingas prisijungimas', 'Bandymas prisijungti su: root@ktu.lt', '2025-11-30 02:16:12'),
+(NULL, '45.142.212.61', 'Nesėkmingas prisijungimas', 'Bandymas prisijungti su: admin@example.com', '2025-11-30 02:16:38'),
+(NULL, '45.142.212.61', 'Nesėkminga registracija', 'Bandymas registruotis su: test@test.com', '2025-11-30 02:17:01'),
+
+-- Scenario 6: Mobilaus tinklo vartotojai (dynamic IP)
+(11, '88.119.163.12', 'Registracija', 'Nauja paskyra: Ieva Ievaitė (ieva@example.com)', '2025-11-23 16:00:00'),
+(11, '88.119.163.12', 'Prisijungimas', 'Sėkmingas prisijungimas: ieva@example.com', '2025-11-23 16:05:00'),
+(11, '88.119.165.234', 'Prisijungimas', 'Sėkmingas prisijungimas: ieva@example.com', '2025-11-24 08:30:00'),
+(11, '88.119.167.89', 'Prisijungimas', 'Sėkmingas prisijungimas: ieva@example.com', '2025-11-24 18:45:00'),
+(11, '88.119.167.89', 'Statymas', 'Pastatė 2150.00 € aukcione #3', '2025-11-24 19:00:00'),
+
+-- Scenario 7: Įmonės tinklas - kolegos
+(12, '213.252.140.25', 'Registracija', 'Nauja paskyra: Darius Dariūnas (darius@example.com)', '2025-11-27 09:00:00'),
+(12, '213.252.140.25', 'Prisijungimas', 'Sėkmingas prisijungimas: darius@example.com', '2025-11-27 09:30:00'),
+(12, '213.252.140.25', 'Aukciono kūrimas', 'Sukurtas aukcionas: Dell XPS 13 (#6)', '2025-11-27 10:00:00'),
+(13, '213.252.140.25', 'Registracija', 'Nauja paskyra: Rasa Rasaitė (rasa@example.com)', '2025-11-27 11:00:00'),
+(13, '213.252.140.25', 'Prisijungimas', 'Sėkmingas prisijungimas: rasa@example.com', '2025-11-27 11:15:00'),
+(13, '213.252.140.25', 'Žinutė', 'Išsiuntė žinutę vartotojui #12: Ar galiu pasiskolinti įkroviklį?', '2025-11-27 11:30:00'),
+
+-- Scenario 8: Administratorių veikla
+(1, '192.168.1.50', 'Prisijungimas', 'Sėkmingas prisijungimas: admin@ktu.lt', '2025-11-28 08:00:00'),
+(1, '192.168.1.50', 'IP blokavimas', 'Užblokuotas IP: 45.142.212.61', '2025-11-30 09:00:00'),
+(4, '192.168.1.55', 'Prisijungimas', 'Sėkmingas prisijungimas: moderator@ktu.lt', '2025-11-29 10:00:00'),
+(4, '192.168.1.55', 'Komentaras', 'Moderatorius ištrynė komentarą', '2025-11-29 10:30:00'),
+
+-- Scenario 9: Aktyvūs pirkėjai
+(5, '78.56.123.45', 'Statymas', 'Pastatė 860.00 € aukcione #1', '2025-12-01 14:00:00'),
+(6, '78.56.123.45', 'Statymas', 'Pastatė 665.00 € aukcione #2', '2025-12-01 14:30:00'),
+(9, '193.219.28.45', 'Statymas', 'Pastatė 460.00 € aukcione #4', '2025-12-01 15:00:00'),
+(11, '88.119.168.101', 'Statymas', 'Pastatė 2200.00 € aukcione #3', '2025-12-01 16:00:00'),
+
+-- Scenario 10: Žinutės tarp vartotojų
+(5, '78.56.123.45', 'Žinutė', 'Išsiuntė žinutę vartotojui #3: Ar galite susitikti šiandien?', '2025-12-02 09:00:00'),
+(3, '192.168.1.100', 'Žinutė', 'Išsiuntė žinutę vartotojui #5: Taip, galiu 18:00', '2025-12-02 09:30:00'),
+(10, '193.219.28.45', 'Žinutė', 'Išsiuntė žinutę vartotojui #9: Ar dalyvausi aukcione?', '2025-12-02 11:00:00'),
+
+-- Scenario 11: Pavėlavę prisijungimai (naktis)
+(6, '78.56.123.45', 'Prisijungimas', 'Sėkmingas prisijungimas: petras@example.com', '2025-12-02 23:45:00'),
+(6, '78.56.123.45', 'Statymas', 'Pastatė 680.00 € aukcione #2', '2025-12-02 23:50:00'),
+(11, '88.119.169.45', 'Prisijungimas', 'Sėkmingas prisijungimas: ieva@example.com', '2025-12-03 01:30:00'),
+(11, '88.119.169.45', 'Komentaras', 'Parašė komentarą aukcione #3', '2025-12-03 01:35:00');
+
+-- Demonstraciniai IP blokavimai
+INSERT INTO ip_blokavimai (ip_adresas, priezastis, užblokavo_admin_id, galioja_iki, aktyvus) VALUES
+('45.142.212.61', 'Daug nesėkmingų prisijungimo bandymų - galimas bruteforce', 1, '2025-12-30 23:59:59', TRUE),
+('103.45.67.89', 'Spam žinutės', 1, NULL, TRUE),
+('185.220.101.45', 'Sukčiavimo bandymai', 1, '2026-01-15 00:00:00', TRUE);
