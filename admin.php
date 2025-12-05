@@ -90,6 +90,22 @@ include 'includes/header.php';
 
 <h2>⚙️ Administratoriaus skydelis</h2>
 
+<!-- Greitos nuorodos -->
+<div style="margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #3498db;">
+    <h3 style="margin-top: 0; margin-bottom: 15px;">🛠️ Administratoriaus įrankiai</h3>
+    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+        <a href="ip_management.php" class="btn btn-primary" style="text-decoration: none;">
+            🔒 IP adresų valdymas
+        </a>
+        <a href="messages.php" class="btn btn-secondary" style="text-decoration: none;">
+            📬 Žinutės
+        </a>
+        <a href="wallet.php" class="btn btn-secondary" style="text-decoration: none;">
+            💰 Piniginė
+        </a>
+    </div>
+</div>
+
 <!-- Statistika -->
 <div class="auction-meta" style="margin-bottom: 30px;">
     <div class="meta-item">

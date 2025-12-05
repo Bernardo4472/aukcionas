@@ -72,6 +72,12 @@ $page_title = htmlspecialchars($profile_user['vardas']) . ' - Profilis';
 include 'includes/header.php';
 ?>
 
+<div style="margin-bottom: 20px;">
+    <a href="index.php" style="color: #3498db; text-decoration: none;">
+        ← Grįžti į aukcionų sąrašą
+    </a>
+</div>
+
 <h2>👤 Vartotojo profilis</h2>
 
 <!-- Profilio kortelė -->

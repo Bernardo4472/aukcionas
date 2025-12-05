@@ -32,6 +32,7 @@
                             </span>
                         <?php endif; ?>
                     </a>
+                    <a href="profile.php?id=<?php echo $_SESSION['user_id']; ?>">Mano profilis</a>
 
                     <?php if (has_role('accountant')): ?>
                         <a href="accountant.php">Buhalterija</a>
@@ -46,7 +47,9 @@
                     <?php endif; ?>
 
                     <div class="nav-user">
-                        <span>👤 <?php echo htmlspecialchars($_SESSION['vardas']); ?></span>
+                        <a href="profile.php?id=<?php echo $_SESSION['user_id']; ?>" style="text-decoration: none; color: inherit;">
+                            <span>👤 <?php echo htmlspecialchars($_SESSION['vardas']); ?></span>
+                        </a>
                         <span class="balance">💰 <?php
                             $user = get_logged_in_user();
                             echo format_money($user['balansas']);

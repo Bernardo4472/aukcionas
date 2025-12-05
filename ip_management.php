@@ -105,6 +105,12 @@ $page_title = 'IP Valdymas';
 include 'includes/header.php';
 ?>
 
+<div style="margin-bottom: 20px;">
+    <a href="admin.php" style="color: #3498db; text-decoration: none;">
+        ← Grįžti į administravimo skydelį
+    </a>
+</div>
+
 <h2>🌐 IP Adresų Valdymas</h2>
 
 <!-- IP blokavimo forma -->

@@ -116,11 +116,13 @@ $page_title = 'Redaguoti aukcioną';
 include 'includes/header.php';
 ?>
 
-<h2>Redaguoti aukcioną</h2>
-
 <div style="margin-bottom: 20px;">
-    <a href="auction.php?id=<?php echo $auction_id; ?>" class="btn btn-secondary">← Grįžti į aukcioną</a>
+    <a href="auction.php?id=<?php echo $auction_id; ?>" style="color: #3498db; text-decoration: none;">
+        ← Grįžti į aukcioną
+    </a>
 </div>
+
+<h2>Redaguoti aukcioną</h2>
 
 <!-- Aukciono informacija -->
 <div class="auction-details" style="max-width: 900px;">
