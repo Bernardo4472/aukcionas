@@ -99,6 +99,52 @@ if ($selected_ip) {
     $stmt->bind_param("s", $selected_ip);
     $stmt->execute();
     $ip_users = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+    // Gauti sukurtus aukcionus (pardavimai)
+    $ip_user_ids = array_column($ip_users, 'id');
+    $ip_sales = [];
+    $ip_purchases = [];
+
+    if (!empty($ip_user_ids)) {
+        $ids_placeholder = implode(',', array_fill(0, count($ip_user_ids), '?'));
+
+        // Parduoti aukcionai (sukurti šio IP vartotojų)
+        $query = "SELECT a.*, v.vardas as savininkas,
+                  (SELECT COUNT(*) FROM statymai WHERE aukciono_id = a.id) as bid_count
+                  FROM aukcionai a
+                  JOIN vartotojai v ON a.vartotojo_id = v.id
+                  WHERE a.vartotojo_id IN ($ids_placeholder)
+                  ORDER BY a.sukurimo_data DESC";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param(str_repeat('i', count($ip_user_ids)), ...$ip_user_ids);
+        $stmt->execute();
+        $ip_sales = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+        // Nupirkti aukcionai (laimėti šio IP vartotojų)
+        $query = "SELECT a.*, v.vardas as savininkas,
+                  s.vartotojo_id as laimetojo_id,
+                  vl.vardas as laimetojas,
+                  s.suma as laimeti_kaina
+                  FROM aukcionai a
+                  JOIN vartotojai v ON a.vartotojo_id = v.id
+                  LEFT JOIN (
+                      SELECT aukciono_id, vartotojo_id, suma
+                      FROM statymai s1
+                      WHERE data_laikas = (
+                          SELECT MAX(data_laikas)
+                          FROM statymai s2
+                          WHERE s2.aukciono_id = s1.aukciono_id
+                      )
+                  ) s ON a.id = s.aukciono_id
+                  LEFT JOIN vartotojai vl ON s.vartotojo_id = vl.id
+                  WHERE a.busena = 'pasibaiges'
+                  AND s.vartotojo_id IN ($ids_placeholder)
+                  ORDER BY a.pabaigos_laikas DESC";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param(str_repeat('i', count($ip_user_ids)), ...$ip_user_ids);
+        $stmt->execute();
+        $ip_purchases = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
 }
 
 $page_title = 'IP Valdymas';
@@ -275,6 +321,114 @@ include 'includes/header.php';
                         </li>
                     <?php endforeach; ?>
                 </ul>
+            </div>
+        <?php endif; ?>
+
+        <!-- Pirkimų/Pardavimų statistika -->
+        <div class="auction-meta" style="margin-bottom: 30px;">
+            <div class="meta-item">
+                <div class="meta-label">🏪 Sukurtų aukcionų</div>
+                <div class="meta-value" style="color: #27ae60;"><?php echo count($ip_sales); ?></div>
+            </div>
+
+            <div class="meta-item">
+                <div class="meta-label">🛒 Laimėtų aukcionų</div>
+                <div class="meta-value" style="color: #3498db;"><?php echo count($ip_purchases); ?></div>
+            </div>
+
+            <div class="meta-item">
+                <div class="meta-label">📊 Statymų skaičius</div>
+                <div class="meta-value">
+                    <?php
+                    $bid_count = 0;
+                    foreach ($ip_activity as $act) {
+                        if ($act['veiksmas'] === 'Statymas') $bid_count++;
+                    }
+                    echo $bid_count;
+                    ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sukurti aukcionai (pardavimai) -->
+        <?php if (!empty($ip_sales)): ?>
+            <div style="background: #d1ecf1; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                <h4 style="margin-bottom: 15px;">🏪 Sukurti aukcionai iš šio IP (<?php echo count($ip_sales); ?>):</h4>
+                <div style="max-height: 400px; overflow-y: auto;">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>Aukcionas</th>
+                                <th>Savininkas</th>
+                                <th>Kaina</th>
+                                <th>Būsena</th>
+                                <th>Statymų</th>
+                                <th>Sukurta</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($ip_sales as $sale): ?>
+                                <tr>
+                                    <td>
+                                        <a href="auction.php?id=<?php echo $sale['id']; ?>">
+                                            <?php echo htmlspecialchars($sale['pavadinimas']); ?>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="profile.php?id=<?php echo $sale['vartotojo_id']; ?>">
+                                            <?php echo htmlspecialchars($sale['savininkas']); ?>
+                                        </a>
+                                    </td>
+                                    <td><?php echo format_money($sale['dabartine_kaina']); ?></td>
+                                    <td>
+                                        <span class="auction-status status-<?php echo $sale['busena']; ?>">
+                                            <?php echo ucfirst($sale['busena']); ?>
+                                        </span>
+                                    </td>
+                                    <td><?php echo $sale['bid_count']; ?></td>
+                                    <td><?php echo format_datetime($sale['sukurimo_data']); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <!-- Laimėti aukcionai (pirkimai) -->
+        <?php if (!empty($ip_purchases)): ?>
+            <div style="background: #d4edda; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                <h4 style="margin-bottom: 15px;">🛒 Laimėti aukcionai iš šio IP (<?php echo count($ip_purchases); ?>):</h4>
+                <div style="max-height: 400px; overflow-y: auto;">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>Aukcionas</th>
+                                <th>Laimėtojas</th>
+                                <th>Laimėta kaina</th>
+                                <th>Pabaigos laikas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($ip_purchases as $purchase): ?>
+                                <tr>
+                                    <td>
+                                        <a href="auction.php?id=<?php echo $purchase['id']; ?>">
+                                            <?php echo htmlspecialchars($purchase['pavadinimas']); ?>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="profile.php?id=<?php echo $purchase['laimetojo_id']; ?>">
+                                            <?php echo htmlspecialchars($purchase['laimetojas']); ?>
+                                        </a>
+                                    </td>
+                                    <td><strong><?php echo format_money($purchase['laimeti_kaina']); ?></strong></td>
+                                    <td><?php echo format_datetime($purchase['pabaigos_laikas']); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         <?php endif; ?>
 
