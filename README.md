@@ -31,6 +31,7 @@ A full-featured auction portal system built with PHP, MySQL, HTML, CSS, and Java
 #### 🛡️ Moderator
 - Delete inappropriate comments
 - Delete problematic auctions (without bids)
+- Manually refund money to bidders for specific auctions
 - View all auctions and comments
 
 #### 💼 Accountant
@@ -42,6 +43,7 @@ A full-featured auction portal system built with PHP, MySQL, HTML, CSS, and Java
 - All moderator and accountant permissions
 - Change user roles
 - Hide/unhide auctions
+- Manually refund money to bidders for specific auctions
 - View audit logs
 - Full system access
 
@@ -184,6 +186,12 @@ The system includes pre-configured demo accounts:
 2. Access "Moderavimas" from navigation
 3. Delete inappropriate comments
 4. Delete problematic auctions (only those without bids)
+5. **Refund money to bidders**:
+   - Scroll to "Rankinis pinigų grąžinimas" section
+   - Enter auction ID and click "Ieškoti statymų"
+   - View all bids for that auction
+   - Click "Grąžinti" button next to any bid to refund money
+   - System prevents duplicate refunds automatically
 
 ### For Administrators
 
@@ -193,7 +201,8 @@ The system includes pre-configured demo accounts:
 4. Hide/unhide auctions
 5. View audit logs
 6. Add money to wallets
-7. Full system oversight
+7. **Refund money to bidders** (same as moderators)
+8. Full system oversight
 
 ---
 

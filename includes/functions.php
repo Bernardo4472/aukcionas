@@ -364,3 +364,92 @@ function add_balance($user_id, $amount, $description = 'Balanso papildymas') {
         return ['success' => false, 'message' => 'Įvyko klaida. Bandykite dar kartą.'];
     }
 }
+
+/**
+ * Grąžinti pinigus statytojui už aukcioną
+ * @param int $bid_id - statymo ID
+ * @param int $admin_user_id - administratoriaus/moderatoriaus ID
+ * @return array - rezultatas su 'success' ir 'message'
+ */
+function refund_bid($bid_id, $admin_user_id) {
+    global $conn;
+
+    // Gauti statymo duomenis
+    $stmt = $conn->prepare("SELECT s.*, a.pavadinimas as aukciono_pavadinimas
+                            FROM statymai s
+                            JOIN aukcionai a ON s.aukciono_id = a.id
+                            WHERE s.id = ?");
+    $stmt->bind_param("i", $bid_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        return ['success' => false, 'message' => 'Statymas nerastas.'];
+    }
+
+    $bid = $result->fetch_assoc();
+
+    // Patikrinti, ar šis statymas jau buvo grąžintas
+    $stmt = $conn->prepare("SELECT COUNT(*) as count FROM transakcijos 
+                            WHERE vartotojo_id = ? 
+                            AND tipas = 'grazinimas' 
+                            AND aprasymas LIKE ?");
+    $description_pattern = '%Rankinis grąžinimas iš aukciono #' . $bid['aukciono_id'] . '%statymas #' . $bid_id . '%';
+    $stmt->bind_param("is", $bid['vartotojo_id'], $description_pattern);
+    $stmt->execute();
+    $check_result = $stmt->get_result()->fetch_assoc();
+
+    if ($check_result['count'] > 0) {
+        return ['success' => false, 'message' => 'Šis statymas jau buvo grąžintas.'];
+    }
+
+    $conn->begin_transaction();
+
+    try {
+        // Grąžinti pinigus statytojui
+        $stmt = $conn->prepare("UPDATE vartotojai SET balansas = balansas + ? WHERE id = ?");
+        $stmt->bind_param("di", $bid['suma'], $bid['vartotojo_id']);
+        $stmt->execute();
+
+        // Įrašyti grąžinimo transakciją
+        $stmt = $conn->prepare("INSERT INTO transakcijos (vartotojo_id, suma, tipas, aprasymas) VALUES (?, ?, 'grazinimas', ?)");
+        $description = 'Rankinis grąžinimas iš aukciono #' . $bid['aukciono_id'] . ' (' . $bid['aukciono_pavadinimas'] . ') - statymas #' . $bid_id;
+        $stmt->bind_param("ids", $bid['vartotojo_id'], $bid['suma'], $description);
+        $stmt->execute();
+
+        // Įrašyti auditą
+        log_audit($admin_user_id, 'Rankinis grąžinimas', 'Grąžinta ' . format_money($bid['suma']) . ' vartotojui #' . $bid['vartotojo_id'] . ' už statymą #' . $bid_id . ' aukcione #' . $bid['aukciono_id']);
+
+        $conn->commit();
+
+        return ['success' => true, 'message' => 'Pinigai sėkmingai grąžinti: ' . format_money($bid['suma'])];
+
+    } catch (Exception $e) {
+        $conn->rollback();
+        return ['success' => false, 'message' => 'Įvyko klaida. Bandykite dar kartą.'];
+    }
+}
+
+/**
+ * Gauti visus statymus aukcione su vartotojų informacija
+ * @param int $auction_id - aukciono ID
+ * @return array - statymų masyvas su vartotojų duomenimis
+ */
+function get_auction_bids_detailed($auction_id) {
+    global $conn;
+
+    $stmt = $conn->prepare("SELECT s.*, v.vardas, v.el_pastas,
+                            (SELECT COUNT(*) FROM transakcijos t 
+                             WHERE t.vartotojo_id = s.vartotojo_id 
+                             AND t.tipas = 'grazinimas' 
+                             AND t.aprasymas LIKE CONCAT('%statymas #', s.id, '%')) as is_refunded
+                            FROM statymai s
+                            JOIN vartotojai v ON s.vartotojo_id = v.id
+                            WHERE s.aukciono_id = ?
+                            ORDER BY s.suma DESC, s.data_laikas DESC");
+    $stmt->bind_param("i", $auction_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    return $result->fetch_all(MYSQLI_ASSOC);
+}

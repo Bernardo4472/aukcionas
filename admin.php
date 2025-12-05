@@ -54,6 +54,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_hidden'])) {
     exit();
 }
 
+// Apdoroti rankinio grąžinimo užklausą
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['refund_bid'])) {
+    $bid_id = intval($_POST['bid_id']);
+
+    $result = refund_bid($bid_id, $_SESSION['user_id']);
+
+    if ($result['success']) {
+        $_SESSION['success'] = $result['message'];
+    } else {
+        $_SESSION['error'] = $result['message'];
+    }
+
+    header("Location: admin.php?tab=refunds");
+    exit();
+}
+
 // Gauti statistiką
 $stats = [];
 $stats['total_users'] = $conn->query("SELECT COUNT(*) as count FROM vartotojai")->fetch_assoc()['count'];
@@ -331,6 +347,118 @@ include 'includes/header.php';
                 <?php endforeach; ?>
             </tbody>
         </table>
+    </div>
+
+    <!-- Grąžinimų valdymas -->
+    <div class="admin-section">
+        <h3>💸 Rankinis pinigų grąžinimas</h3>
+
+        <div class="alert alert-info" style="margin-bottom: 20px;">
+            <strong>ℹ️ Informacija:</strong> Čia galite grąžinti pinigus statytojams už konkretų aukcioną. 
+            Sistema automatiškai tikrina, ar grąžinimas jau buvo atliktas.
+        </div>
+
+        <form method="GET" action="" style="margin-bottom: 20px;">
+            <input type="hidden" name="tab" value="refunds">
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <div class="form-group" style="flex: 1; margin: 0;">
+                    <label for="refund_auction_id">Aukciono ID</label>
+                    <input
+                        type="number"
+                        id="refund_auction_id"
+                        name="refund_auction_id"
+                        class="form-control"
+                        placeholder="Įveskite aukciono ID"
+                        min="1"
+                        value="<?php echo isset($_GET['refund_auction_id']) ? intval($_GET['refund_auction_id']) : ''; ?>">
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 24px;">
+                    🔍 Ieškoti statymų
+                </button>
+            </div>
+        </form>
+
+        <?php if (isset($_GET['refund_auction_id'])): ?>
+            <?php
+            $refund_auction_id = intval($_GET['refund_auction_id']);
+            $refund_auction = get_auction($refund_auction_id);
+
+            if ($refund_auction):
+                $auction_bids = get_auction_bids_detailed($refund_auction_id);
+            ?>
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                    <h4 style="margin-top: 0;">
+                        Aukcionas: <?php echo htmlspecialchars($refund_auction['pavadinimas']); ?>
+                    </h4>
+                    <p style="margin: 5px 0;">
+                        <strong>Savininkas:</strong> <?php echo htmlspecialchars($refund_auction['savininkas']); ?><br>
+                        <strong>Dabartinė kaina:</strong> <?php echo format_money($refund_auction['dabartine_kaina']); ?><br>
+                        <strong>Būsena:</strong> <?php echo $refund_auction['busena']; ?>
+                    </p>
+                </div>
+
+                <?php if (!empty($auction_bids)): ?>
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>Statymo ID</th>
+                                <th>Data</th>
+                                <th>Statytojas</th>
+                                <th>El. paštas</th>
+                                <th>Suma</th>
+                                <th>Būsena</th>
+                                <th>Veiksmai</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($auction_bids as $bid): ?>
+                                <tr>
+                                    <td><?php echo $bid['id']; ?></td>
+                                    <td><?php echo format_datetime($bid['data_laikas']); ?></td>
+                                    <td><?php echo htmlspecialchars($bid['vardas']); ?></td>
+                                    <td><?php echo htmlspecialchars($bid['el_pastas']); ?></td>
+                                    <td>
+                                        <strong style="color: #e74c3c;">
+                                            <?php echo format_money($bid['suma']); ?>
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <?php if ($bid['is_refunded'] > 0): ?>
+                                            <span style="color: #27ae60; font-weight: bold;">✓ Grąžinta</span>
+                                        <?php else: ?>
+                                            <span style="color: #e67e22; font-weight: bold;">⏳ Negrąžinta</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <?php if ($bid['is_refunded'] == 0): ?>
+                                            <form method="POST" action="" style="display: inline;">
+                                                <input type="hidden" name="bid_id" value="<?php echo $bid['id']; ?>">
+                                                <button
+                                                    type="submit"
+                                                    name="refund_bid"
+                                                    class="btn btn-success"
+                                                    style="padding: 5px 10px;"
+                                                    onclick="return confirm('Ar tikrai norite grąžinti <?php echo format_money($bid['suma']); ?> vartotojui <?php echo htmlspecialchars($bid['vardas']); ?>?')">
+                                                    💸 Grąžinti
+                                                </button>
+                                            </form>
+                                        <?php else: ?>
+                                            <span style="color: #999;">Jau grąžinta</span>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <p style="color: #999;">Šiame aukcione nėra statymų.</p>
+                <?php endif; ?>
+            <?php else: ?>
+                <div class="alert alert-warning">
+                    Aukcionas su ID #<?php echo $refund_auction_id; ?> nerastas.
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
     </div>
 
     <!-- Audito žurnalas -->
