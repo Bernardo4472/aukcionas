@@ -84,6 +84,37 @@ $audit_query = "SELECT a.*, v.vardas
 $audit_result = $conn->query($audit_query);
 $audit_logs = $audit_result->fetch_all(MYSQLI_ASSOC);
 
+// Gauti vartotojų reitingus
+require_once 'includes/extended_functions.php';
+$users_ratings = [];
+foreach ($users as $u) {
+    $rating_stats = get_user_rating_stats($u['id']);
+    $sales_count = get_user_sales_count($u['id']);
+    $purchases_count = get_user_purchases_count($u['id']);
+
+    $users_ratings[] = [
+        'id' => $u['id'],
+        'vardas' => $u['vardas'],
+        'el_pastas' => $u['el_pastas'],
+        'role' => $u['role'],
+        'vidutinis_ivertinimas' => $rating_stats['vidutinis_ivertinimas'],
+        'bendras_skaicius' => $rating_stats['bendras_skaicius'],
+        'teigiamu' => $rating_stats['teigiamu'],
+        'neigiamu' => $rating_stats['neigiamu'],
+        'neutraliu' => $rating_stats['neutraliu'],
+        'parduota' => $sales_count,
+        'nupirkta' => $purchases_count
+    ];
+}
+
+// Rūšiuoti pagal reitingą (nuo aukščiausio)
+usort($users_ratings, function($a, $b) {
+    if ($a['bendras_skaicius'] == 0 && $b['bendras_skaicius'] == 0) return 0;
+    if ($a['bendras_skaicius'] == 0) return 1;
+    if ($b['bendras_skaicius'] == 0) return -1;
+    return $b['vidutinis_ivertinimas'] <=> $a['vidutinis_ivertinimas'];
+});
+
 $page_title = 'Administravimas';
 include 'includes/header.php';
 ?>
@@ -179,6 +210,71 @@ include 'includes/header.php';
                                 onclick="openAddBalanceModal(<?php echo $u['id']; ?>, '<?php echo htmlspecialchars($u['vardas']); ?>')">
                                 Papildyti
                             </button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Vartotojų reitingai -->
+    <div class="admin-section">
+        <h3>⭐ Vartotojų reitingai ir statistika</h3>
+
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>Vartotojas</th>
+                    <th>⭐ Reitingas</th>
+                    <th>📊 Atsiliepimai</th>
+                    <th>✓ Teigiami</th>
+                    <th>✗ Neigiami</th>
+                    <th>○ Neutralūs</th>
+                    <th>🏪 Parduota</th>
+                    <th>🛒 Nupirkta</th>
+                    <th>Veiksmai</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($users_ratings as $ur): ?>
+                    <tr>
+                        <td>
+                            <strong><?php echo htmlspecialchars($ur['vardas']); ?></strong><br>
+                            <small style="color: #666;"><?php echo htmlspecialchars($ur['el_pastas']); ?></small>
+                        </td>
+                        <td>
+                            <?php if ($ur['bendras_skaicius'] > 0): ?>
+                                <strong style="color: #f39c12; font-size: 1.1rem;">
+                                    <?php echo number_format($ur['vidutinis_ivertinimas'], 2); ?> / 5.00
+                                </strong>
+                            <?php else: ?>
+                                <span style="color: #999;">Nėra įvertinimų</span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <strong><?php echo $ur['bendras_skaicius']; ?></strong>
+                        </td>
+                        <td style="color: #27ae60;">
+                            <strong><?php echo $ur['teigiamu']; ?></strong>
+                        </td>
+                        <td style="color: #e74c3c;">
+                            <strong><?php echo $ur['neigiamu']; ?></strong>
+                        </td>
+                        <td style="color: #95a5a6;">
+                            <?php echo $ur['neutraliu']; ?>
+                        </td>
+                        <td style="color: #27ae60;">
+                            <?php echo $ur['parduota']; ?>
+                        </td>
+                        <td style="color: #3498db;">
+                            <?php echo $ur['nupirkta']; ?>
+                        </td>
+                        <td>
+                            <a href="profile.php?id=<?php echo $ur['id']; ?>"
+                               class="btn btn-primary"
+                               style="padding: 5px 10px;">
+                                Profilis
+                            </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
