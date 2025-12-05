@@ -68,6 +68,40 @@ $stmt->bind_param("i", $profile_user_id);
 $stmt->execute();
 $active_auctions = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
+// Gauti pasibaigusius aukcionus (parduoti)
+$stmt = $conn->prepare("SELECT a.*,
+                        (SELECT COUNT(*) FROM statymai WHERE aukciono_id = a.id) as bid_count,
+                        (SELECT s.vartotojo_id FROM statymai s WHERE s.aukciono_id = a.id ORDER BY s.suma DESC, s.data_laikas ASC LIMIT 1) as winner_id,
+                        (SELECT v.vardas FROM statymai s JOIN vartotojai v ON s.vartotojo_id = v.id WHERE s.aukciono_id = a.id ORDER BY s.suma DESC, s.data_laikas ASC LIMIT 1) as winner_name
+                        FROM aukcionai a
+                        WHERE a.vartotojo_id = ? AND a.busena = 'pasibaiges'
+                        ORDER BY a.pabaigos_laikas DESC
+                        LIMIT 10");
+$stmt->bind_param("i", $profile_user_id);
+$stmt->execute();
+$sold_auctions = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+// Gauti laimėtus aukcionus (nupirkti)
+$stmt = $conn->prepare("SELECT a.*, v.vardas as seller_name, v.id as seller_id, s.suma as win_price
+                        FROM aukcionai a
+                        JOIN vartotojai v ON a.vartotojo_id = v.id
+                        JOIN (
+                            SELECT s1.aukciono_id, s1.vartotojo_id, s1.suma
+                            FROM statymai s1
+                            WHERE s1.data_laikas = (
+                                SELECT MAX(s2.data_laikas)
+                                FROM statymai s2
+                                WHERE s2.aukciono_id = s1.aukciono_id
+                                AND s2.suma = (SELECT MAX(s3.suma) FROM statymai s3 WHERE s3.aukciono_id = s1.aukciono_id)
+                            )
+                        ) s ON a.id = s.aukciono_id
+                        WHERE a.busena = 'pasibaiges' AND s.vartotojo_id = ?
+                        ORDER BY a.pabaigos_laikas DESC
+                        LIMIT 10");
+$stmt->bind_param("i", $profile_user_id);
+$stmt->execute();
+$won_auctions = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
 $page_title = htmlspecialchars($profile_user['vardas']) . ' - Profilis';
 include 'includes/header.php';
 ?>
@@ -171,6 +205,102 @@ include 'includes/header.php';
                 </div>
             <?php endforeach; ?>
         </div>
+    </div>
+<?php endif; ?>
+
+<!-- Parduoti aukcionai -->
+<?php if (!empty($sold_auctions) && $is_own_profile): ?>
+    <div class="admin-section" style="margin-top: 30px;">
+        <h3>🏪 Parduoti aukcionai (<?php echo count($sold_auctions); ?>)</h3>
+
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>Aukcionas</th>
+                    <th>Galutinė kaina</th>
+                    <th>Statymų</th>
+                    <th>Laimėtojas</th>
+                    <th>Pabaigė</th>
+                    <th>Veiksmai</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($sold_auctions as $auction): ?>
+                    <tr>
+                        <td>
+                            <a href="auction.php?id=<?php echo $auction['id']; ?>">
+                                <strong><?php echo htmlspecialchars($auction['pavadinimas']); ?></strong>
+                            </a>
+                        </td>
+                        <td><strong><?php echo format_money($auction['dabartine_kaina']); ?></strong></td>
+                        <td><?php echo $auction['bid_count']; ?></td>
+                        <td>
+                            <?php if ($auction['winner_id']): ?>
+                                <a href="profile.php?id=<?php echo $auction['winner_id']; ?>">
+                                    <?php echo htmlspecialchars($auction['winner_name']); ?>
+                                </a>
+                            <?php else: ?>
+                                <em>Nėra statymų</em>
+                            <?php endif; ?>
+                        </td>
+                        <td><?php echo format_datetime($auction['pabaigos_laikas']); ?></td>
+                        <td>
+                            <?php if ($auction['winner_id']): ?>
+                                <a href="messages.php?tab=new&to=<?php echo $auction['winner_id']; ?>&subject=Dėl parduoto aukciono: <?php echo urlencode($auction['pavadinimas']); ?>&auction=<?php echo $auction['id']; ?>"
+                                   class="btn btn-primary"
+                                   style="padding: 5px 10px;">
+                                    📧 Rašyti pirkėjui
+                                </a>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+<?php endif; ?>
+
+<!-- Laimėti aukcionai -->
+<?php if (!empty($won_auctions) && $is_own_profile): ?>
+    <div class="admin-section" style="margin-top: 30px;">
+        <h3>🛒 Laimėti aukcionai (<?php echo count($won_auctions); ?>)</h3>
+
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>Aukcionas</th>
+                    <th>Laimėta kaina</th>
+                    <th>Pardavėjas</th>
+                    <th>Pabaigė</th>
+                    <th>Veiksmai</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($won_auctions as $auction): ?>
+                    <tr>
+                        <td>
+                            <a href="auction.php?id=<?php echo $auction['id']; ?>">
+                                <strong><?php echo htmlspecialchars($auction['pavadinimas']); ?></strong>
+                            </a>
+                        </td>
+                        <td><strong style="color: #27ae60;"><?php echo format_money($auction['win_price']); ?></strong></td>
+                        <td>
+                            <a href="profile.php?id=<?php echo $auction['seller_id']; ?>">
+                                <?php echo htmlspecialchars($auction['seller_name']); ?>
+                            </a>
+                        </td>
+                        <td><?php echo format_datetime($auction['pabaigos_laikas']); ?></td>
+                        <td>
+                            <a href="messages.php?tab=new&to=<?php echo $auction['seller_id']; ?>&subject=Dėl laimėto aukciono: <?php echo urlencode($auction['pavadinimas']); ?>&auction=<?php echo $auction['id']; ?>"
+                               class="btn btn-success"
+                               style="padding: 5px 10px;">
+                                📧 Rašyti pardavėjui
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
 <?php endif; ?>
 
