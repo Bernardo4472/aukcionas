@@ -82,6 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Įrašyti auditą
             log_audit($user_id, 'Aukciono sukūrimas', 'Sukurtas naujas aukcionas: ' . $pavadinimas . ' (#' . $auction_id . ')');
 
+            // Įrašyti IP veiklą
+            log_ip_activity($user_id, 'Aukciono kūrimas', 'Sukurtas aukcionas: ' . $pavadinimas . ' (#' . $auction_id . ')');
+
             $_SESSION['success'] = 'Aukcionas sėkmingai sukurtas!';
             header("Location: auction.php?id=" . $auction_id);
             exit();

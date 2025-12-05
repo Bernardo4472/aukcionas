@@ -48,6 +48,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_bid'])) {
     $result = place_bid($auction_id, $user['id'], $bid_amount);
 
     if ($result['success']) {
+        // Įrašyti IP veiklą
+        log_ip_activity($user['id'], 'Statymas', 'Pastatė ' . format_money($bid_amount) . ' aukcione #' . $auction_id);
+
         $_SESSION['success'] = $result['message'];
         header("Location: auction.php?id=" . $auction_id);
         exit();
@@ -63,6 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_comment'])) {
     $result = add_comment($auction_id, $user['id'], $comment_text);
 
     if ($result['success']) {
+        // Įrašyti IP veiklą
+        log_ip_activity($user['id'], 'Komentaras', 'Parašė komentarą aukcione #' . $auction_id);
+
         $_SESSION['success'] = $result['message'];
         header("Location: auction.php?id=" . $auction_id);
         exit();

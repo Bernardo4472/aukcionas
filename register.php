@@ -9,10 +9,19 @@ session_start();
 require_once 'includes/db.php';
 require_once 'includes/auth.php';
 require_once 'includes/functions.php';
+require_once 'includes/extended_functions.php';
 
 // Jei vartotojas jau prisijungęs, peradresuoti į pagrindinį puslapį
 if (is_logged_in()) {
     header("Location: index.php");
+    exit();
+}
+
+// Patikrinti, ar IP adresas užblokuotas
+$user_ip = get_user_ip();
+if (is_ip_blocked($user_ip)) {
+    $_SESSION['error'] = 'Jūsų IP adresas užblokuotas. Susisiekite su administracija.';
+    header("Location: register.php");
     exit();
 }
 
@@ -25,10 +34,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = register_user($vardas, $el_pastas, $slaptazodis);
 
     if ($result['success']) {
+        // Įrašyti sėkmingą registraciją
+        // Gauti naujai sukurto vartotojo ID
+        $stmt = $conn->prepare("SELECT id FROM vartotojai WHERE el_pastas = ?");
+        $stmt->bind_param("s", $el_pastas);
+        $stmt->execute();
+        $new_user = $stmt->get_result()->fetch_assoc();
+
+        if ($new_user) {
+            log_ip_activity($new_user['id'], 'Registracija', 'Nauja paskyra: ' . $vardas . ' (' . $el_pastas . ')');
+        }
+
         $_SESSION['success'] = $result['message'];
         header("Location: login.php");
         exit();
     } else {
+        // Įrašyti nesėkmingą registracijos bandymą
+        log_ip_activity(null, 'Nesėkminga registracija', 'Bandymas registruotis su: ' . $el_pastas);
+
         $_SESSION['error'] = $result['message'];
     }
 }

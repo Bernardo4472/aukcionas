@@ -9,10 +9,19 @@ session_start();
 require_once 'includes/db.php';
 require_once 'includes/auth.php';
 require_once 'includes/functions.php';
+require_once 'includes/extended_functions.php';
 
 // Jei vartotojas jau prisijungęs, peradresuoti į pagrindinį puslapį
 if (is_logged_in()) {
     header("Location: index.php");
+    exit();
+}
+
+// Patikrinti, ar IP adresas užblokuotas
+$user_ip = get_user_ip();
+if (is_ip_blocked($user_ip)) {
+    $_SESSION['error'] = 'Jūsų IP adresas užblokuotas. Susisiekite su administracija.';
+    header("Location: login.php");
     exit();
 }
 
@@ -24,10 +33,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = login_user($el_pastas, $slaptazodis);
 
     if ($result['success']) {
+        // Įrašyti sėkmingą prisijungimą
+        log_ip_activity($_SESSION['user_id'], 'Prisijungimas', 'Sėkmingas prisijungimas: ' . $el_pastas);
+
         $_SESSION['success'] = $result['message'];
         header("Location: index.php");
         exit();
     } else {
+        // Įrašyti nesėkmingą prisijungimo bandymą
+        log_ip_activity(null, 'Nesėkmingas prisijungimas', 'Bandymas prisijungti su: ' . $el_pastas);
+
         $_SESSION['error'] = $result['message'];
     }
 }

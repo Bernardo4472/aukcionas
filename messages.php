@@ -27,6 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_message'])) {
     $result = send_message($user['id'], $to_user_id, $subject, $message, $auction_id);
 
     if ($result['success']) {
+        // Įrašyti IP veiklą
+        log_ip_activity($user['id'], 'Žinutė', 'Išsiuntė žinutę vartotojui #' . $to_user_id . ': ' . $subject);
+
         $_SESSION['success'] = $result['message'];
     } else {
         $_SESSION['error'] = $result['message'];
