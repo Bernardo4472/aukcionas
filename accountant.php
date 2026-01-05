@@ -58,7 +58,7 @@ $page_title = 'Buhalterija';
 include 'includes/header.php';
 ?>
 
-<h2>💼 Buhalterio skydelis</h2>
+<h2>Buhalterio skydelis</h2>
 
 <div class="admin-panel">
     <!-- Vartotojų balansai -->
@@ -138,10 +138,10 @@ include 'includes/header.php';
                         $suma_class = $trans['suma'] >= 0 ? 'transaction-positive' : 'transaction-negative';
 
                         $tipas_map = [
-                            'papildymas' => '💰 Papildymas',
-                            'statymas' => '📉 Statymas',
-                            'grazinimas' => '🔄 Grąžinimas',
-                            'laimejimas' => '🎉 Laimėjimas'
+                            'papildymas' => 'Papildymas',
+                            'statymas' => 'Statymas',
+                            'grazinimas' => 'Grazinimas',
+                            'laimejimas' => 'Laimejimas'
                         ];
                         $tipas_text = $tipas_map[$trans['tipas']] ?? $trans['tipas'];
                         ?>

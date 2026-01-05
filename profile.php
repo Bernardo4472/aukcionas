@@ -112,16 +112,16 @@ include 'includes/header.php';
     </a>
 </div>
 
-<h2>👤 Vartotojo profilis</h2>
+<h2>Vartotojo profilis</h2>
 
 <!-- Profilio kortelė -->
-<div class="wallet-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+<div class="wallet-card">
     <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 20px;">
         <div>
             <h2><?php echo htmlspecialchars($profile_user['vardas']); ?></h2>
-            <p style="opacity: 0.9;">
+            <p>
                 <strong>Vartotojo ID:</strong> <?php echo $profile_user['id']; ?><br>
-                <strong>Rolė:</strong>
+                <strong>Role:</strong>
                 <span class="role-badge role-<?php echo $profile_user['role']; ?>" style="margin-left: 5px;">
                     <?php
                     $roles = ['admin' => 'Administratorius', 'moderator' => 'Moderatorius',
@@ -137,7 +137,7 @@ include 'includes/header.php';
             <div>
                 <a href="messages.php?tab=new&to=<?php echo $profile_user_id; ?>"
                    class="btn btn-success" style="display: inline-block; margin-bottom: 10px;">
-                    📧 Siųsti žinutę
+                    Siusti zinute
                 </a>
             </div>
         <?php endif; ?>
@@ -147,43 +147,43 @@ include 'includes/header.php';
 <!-- Statistika -->
 <div class="auction-meta" style="margin-top: 30px;">
     <div class="meta-item">
-        <div class="meta-label">⭐ Vidutinis įvertinimas</div>
-        <div class="meta-value" style="color: #f39c12; font-size: 2rem;">
+        <div class="meta-label">Vidutinis ivertinimas</div>
+        <div class="meta-value" style="font-size: 1.5rem;">
             <?php
             if ($rating_stats['bendras_skaicius'] > 0) {
                 echo number_format($rating_stats['vidutinis_ivertinimas'], 2) . ' / 5.00';
             } else {
-                echo 'Nėra įvertinimų';
+                echo 'Nera ivertinimu';
             }
             ?>
         </div>
     </div>
 
     <div class="meta-item">
-        <div class="meta-label">📊 Iš viso atsiliepimų</div>
+        <div class="meta-label">Is viso atsiliepimu</div>
         <div class="meta-value"><?php echo $rating_stats['bendras_skaicius']; ?></div>
         <div style="margin-top: 10px; font-size: 0.9rem;">
-            <span style="color: #27ae60;">✓ Teigiamų: <?php echo $rating_stats['teigiamu']; ?></span><br>
-            <span style="color: #e74c3c;">✗ Neigiamų: <?php echo $rating_stats['neigiamu']; ?></span><br>
-            <span style="color: #95a5a6;">○ Neutralių: <?php echo $rating_stats['neutraliu']; ?></span>
+            <span>Teigiamu: <?php echo $rating_stats['teigiamu']; ?></span><br>
+            <span>Neigiamu: <?php echo $rating_stats['neigiamu']; ?></span><br>
+            <span>Neutraliu: <?php echo $rating_stats['neutraliu']; ?></span>
         </div>
     </div>
 
     <div class="meta-item">
-        <div class="meta-label">🏪 Parduota prekių</div>
-        <div class="meta-value" style="color: #27ae60;"><?php echo $sales_count; ?></div>
+        <div class="meta-label">Parduota prekiu</div>
+        <div class="meta-value"><?php echo $sales_count; ?></div>
     </div>
 
     <div class="meta-item">
-        <div class="meta-label">🛒 Nupirkta prekių</div>
-        <div class="meta-value" style="color: #3498db;"><?php echo $purchases_count; ?></div>
+        <div class="meta-label">Nupirkta prekiu</div>
+        <div class="meta-value"><?php echo $purchases_count; ?></div>
     </div>
 </div>
 
 <!-- Aktyvūs aukcionai -->
 <?php if (!empty($active_auctions)): ?>
     <div class="admin-section" style="margin-top: 30px;">
-        <h3>🔨 Aktyvūs aukcionai (<?php echo count($active_auctions); ?>)</h3>
+        <h3>Aktyvus aukcionai (<?php echo count($active_auctions); ?>)</h3>
 
         <div class="auctions-grid">
             <?php foreach ($active_auctions as $auction): ?>
@@ -211,7 +211,7 @@ include 'includes/header.php';
 <!-- Parduoti aukcionai -->
 <?php if (!empty($sold_auctions) && $is_own_profile): ?>
     <div class="admin-section" style="margin-top: 30px;">
-        <h3>🏪 Parduoti aukcionai (<?php echo count($sold_auctions); ?>)</h3>
+        <h3>Parduoti aukcionai (<?php echo count($sold_auctions); ?>)</h3>
 
         <table class="users-table">
             <thead>
@@ -249,7 +249,7 @@ include 'includes/header.php';
                                 <a href="messages.php?tab=new&to=<?php echo $auction['winner_id']; ?>&subject=Dėl parduoto aukciono: <?php echo urlencode($auction['pavadinimas']); ?>&auction=<?php echo $auction['id']; ?>"
                                    class="btn btn-primary"
                                    style="padding: 5px 10px;">
-                                    📧 Rašyti pirkėjui
+                                    Rasyti pirkejui
                                 </a>
                             <?php endif; ?>
                         </td>
@@ -263,7 +263,7 @@ include 'includes/header.php';
 <!-- Laimėti aukcionai -->
 <?php if (!empty($won_auctions) && $is_own_profile): ?>
     <div class="admin-section" style="margin-top: 30px;">
-        <h3>🛒 Laimėti aukcionai (<?php echo count($won_auctions); ?>)</h3>
+        <h3>Laimeti aukcionai (<?php echo count($won_auctions); ?>)</h3>
 
         <table class="users-table">
             <thead>
@@ -294,7 +294,7 @@ include 'includes/header.php';
                             <a href="messages.php?tab=new&to=<?php echo $auction['seller_id']; ?>&subject=Dėl laimėto aukciono: <?php echo urlencode($auction['pavadinimas']); ?>&auction=<?php echo $auction['id']; ?>"
                                class="btn btn-success"
                                style="padding: 5px 10px;">
-                                📧 Rašyti pardavėjui
+                                Rasyti pardavejui
                             </a>
                         </td>
                     </tr>
@@ -307,18 +307,18 @@ include 'includes/header.php';
 <!-- Atsiliepimų pridėjimo forma (jei ne savo profilis) -->
 <?php if (!$is_own_profile): ?>
     <div class="admin-section" style="margin-top: 30px;">
-        <h3>✍️ Palikti atsiliepimą</h3>
+        <h3>Palikti atsiliepima</h3>
 
         <form method="POST" action="">
             <div class="form-group">
                 <label for="rating">Įvertinimas (1-5 žvaigždutės) <span style="color: red;">*</span></label>
                 <select id="rating" name="rating" class="form-control" required>
                     <option value="">Pasirinkite...</option>
-                    <option value="5">⭐⭐⭐⭐⭐ 5 - Puiku</option>
-                    <option value="4">⭐⭐⭐⭐ 4 - Gerai</option>
-                    <option value="3">⭐⭐⭐ 3 - Vidutiniškai</option>
-                    <option value="2">⭐⭐ 2 - Prastai</option>
-                    <option value="1">⭐ 1 - Labai blogai</option>
+                    <option value="5">5 - Puiku</option>
+                    <option value="4">4 - Gerai</option>
+                    <option value="3">3 - Vidutiniskai</option>
+                    <option value="2">2 - Prastai</option>
+                    <option value="1">1 - Labai blogai</option>
                 </select>
             </div>
 
@@ -326,9 +326,9 @@ include 'includes/header.php';
                 <label for="type">Atsiliepimo tipas <span style="color: red;">*</span></label>
                 <select id="type" name="type" class="form-control" required>
                     <option value="">Pasirinkite...</option>
-                    <option value="teigiamas">✅ Teigiamas</option>
-                    <option value="neutralus">⚪ Neutralus</option>
-                    <option value="neigiamas">❌ Neigiamas</option>
+                    <option value="teigiamas">Teigiamas</option>
+                    <option value="neutralus">Neutralus</option>
+                    <option value="neigiamas">Neigiamas</option>
                 </select>
             </div>
 
@@ -362,32 +362,21 @@ include 'includes/header.php';
 
 <!-- Atsiliepimai -->
 <div class="admin-section" style="margin-top: 30px;">
-    <h3>💬 Atsiliepimai (<?php echo count($feedback_list); ?>)</h3>
+    <h3>Atsiliepimai (<?php echo count($feedback_list); ?>)</h3>
 
     <?php if (empty($feedback_list)): ?>
         <p style="color: #999;">Šis vartotojas dar neturi atsiliepimų.</p>
     <?php else: ?>
         <div style="display: flex; flex-direction: column; gap: 15px;">
             <?php foreach ($feedback_list as $feedback): ?>
-                <div class="comment" style="border-left: 4px solid <?php
-                    echo $feedback['tipas'] === 'teigiamas' ? '#27ae60' :
-                         ($feedback['tipas'] === 'neigiamas' ? '#e74c3c' : '#95a5a6');
-                ?>;">
+                <div class="comment" style="border-left: 3px solid #999;">
                     <div class="comment-header">
-                        <div>
+                            <div>
                             <strong><?php echo htmlspecialchars($feedback['nuo_vartotojo_vardas']); ?></strong>
                             <span style="margin-left: 10px;">
-                                <?php
-                                for ($i = 0; $i < $feedback['ivertinimas']; $i++) {
-                                    echo '⭐';
-                                }
-                                ?>
                                 (<?php echo $feedback['ivertinimas']; ?>/5)
                             </span>
-                            <span class="auction-status" style="margin-left: 10px; <?php
-                                echo 'background: ' . ($feedback['tipas'] === 'teigiamas' ? '#d4edda; color: #155724' :
-                                     ($feedback['tipas'] === 'neigiamas' ? '#f8d7da; color: #721c24' : '#e2e3e5; color: #383d41'));
-                            ?>;">
+                            <span class="auction-status" style="margin-left: 10px;">
                                 <?php echo ucfirst($feedback['tipas']); ?>
                             </span>
                         </div>

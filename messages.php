@@ -58,24 +58,21 @@ $page_title = 'Žinutės';
 include 'includes/header.php';
 ?>
 
-<h2>📬 Žinutės</h2>
+<h2>Zinutes</h2>
 
 <!-- Skirtukai -->
-<div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #e0e0e0;">
+<div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #ddd;">
     <a href="messages.php?tab=inbox"
-       class="btn <?php echo $tab === 'inbox' ? 'btn-primary' : 'btn-secondary'; ?>"
-       style="border-radius: 5px 5px 0 0;">
-        📥 Gautos (<?php echo $unread_count > 0 ? '<strong>' . $unread_count . '</strong>' : '0'; ?>)
+       class="btn <?php echo $tab === 'inbox' ? 'btn-primary' : 'btn-secondary'; ?>">
+        Gautos (<?php echo $unread_count > 0 ? '<strong>' . $unread_count . '</strong>' : '0'; ?>)
     </a>
     <a href="messages.php?tab=sent"
-       class="btn <?php echo $tab === 'sent' ? 'btn-primary' : 'btn-secondary'; ?>"
-       style="border-radius: 5px 5px 0 0;">
-        📤 Išsiųstos
+       class="btn <?php echo $tab === 'sent' ? 'btn-primary' : 'btn-secondary'; ?>">
+        Issiustos
     </a>
     <a href="messages.php?tab=new"
-       class="btn <?php echo $tab === 'new' ? 'btn-primary' : 'btn-secondary'; ?>"
-       style="border-radius: 5px 5px 0 0;">
-        ✉️ Nauja žinutė
+       class="btn <?php echo $tab === 'new' ? 'btn-primary' : 'btn-secondary'; ?>">
+        Nauja zinute
     </a>
 </div>
 
@@ -145,15 +142,15 @@ include 'includes/header.php';
     <?php else: ?>
         <div style="display: flex; flex-direction: column; gap: 15px;">
             <?php foreach ($messages as $msg): ?>
-                <div class="comment" style="<?php echo !$msg['perskaitytas'] && $tab === 'inbox' ? 'border-left: 4px solid #667eea; background: #f0f4ff;' : ''; ?>">
+                <div class="comment" style="<?php echo !$msg['perskaitytas'] && $tab === 'inbox' ? 'border-left: 3px solid #666; background: #f5f5f5;' : ''; ?>">
                     <div class="comment-header">
                         <div>
                             <strong>
-                                <?php echo $tab === 'inbox' ? '📨 Nuo: ' : '📧 Kam: '; ?>
+                                <?php echo $tab === 'inbox' ? 'Nuo: ' : 'Kam: '; ?>
                                 <?php echo htmlspecialchars($tab === 'inbox' ? $msg['siuntejo_vardas'] : $msg['gavejo_vardas']); ?>
                             </strong>
                             <?php if (!$msg['perskaitytas'] && $tab === 'inbox'): ?>
-                                <span style="background: #e74c3c; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; margin-left: 10px;">
+                                <span style="background: #666; color: white; padding: 2px 8px; font-size: 0.8rem; margin-left: 10px;">
                                     Nauja
                                 </span>
                             <?php endif; ?>
@@ -162,7 +159,7 @@ include 'includes/header.php';
                     </div>
 
                     <div style="margin: 10px 0;">
-                        <strong style="color: #667eea;">📋 <?php echo htmlspecialchars($msg['tema']); ?></strong>
+                        <strong style="color: #333;"><?php echo htmlspecialchars($msg['tema']); ?></strong>
                     </div>
 
                     <div class="comment-text">
@@ -170,10 +167,10 @@ include 'includes/header.php';
                     </div>
 
                     <?php if ($msg['aukciono_pavadinimas']): ?>
-                        <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 5px;">
-                            🏷️ Susijęs aukcionas: <strong><?php echo htmlspecialchars($msg['aukciono_pavadinimas']); ?></strong>
+                        <div style="margin-top: 10px; padding: 10px; background: #f5f5f5; border: 1px solid #ddd;">
+                            Susijes aukcionas: <strong><?php echo htmlspecialchars($msg['aukciono_pavadinimas']); ?></strong>
                             <a href="auction.php?id=<?php echo $msg['aukciono_id']; ?>" class="btn btn-primary" style="padding: 5px 10px; margin-left: 10px;">
-                                Peržiūrėti
+                                Perziureti
                             </a>
                         </div>
                     <?php endif; ?>
@@ -182,12 +179,12 @@ include 'includes/header.php';
                         <div style="margin-top: 10px;">
                             <a href="messages.php?tab=new&to=<?php echo $msg['siuntejas_id']; ?>&subject=RE: <?php echo urlencode($msg['tema']); ?>"
                                class="btn btn-primary" style="padding: 5px 15px;">
-                                ↩️ Atsakyti
+                                Atsakyti
                             </a>
                             <?php if (!$msg['perskaitytas']): ?>
                                 <a href="messages.php?tab=inbox&read=<?php echo $msg['id']; ?>"
                                    class="btn btn-secondary" style="padding: 5px 15px;">
-                                    ✓ Pažymėti perskaitytu
+                                    Pazymeti perskaitytu
                                 </a>
                             <?php endif; ?>
                         </div>
@@ -199,13 +196,13 @@ include 'includes/header.php';
 <?php endif; ?>
 
 <div class="alert alert-info mt-20">
-    <strong>ℹ️ Kaip naudoti žinutes:</strong>
+    <strong>Kaip naudoti zinutes:</strong>
     <ul style="margin-left: 20px; margin-top: 10px;">
-        <li>Norėdami siųsti žinutę, spauskite "Nauja žinutė"</li>
-        <li>Į "Gautos" pateks visos gautos žinutės</li>
-        <li>Naujias žinutes matysite su "Nauja" žyma</li>
-        <li>Galite atsakyti į žinutę paspaudę "Atsakyti"</li>
-        <li>Vartotojo ID rasite aukciono puslapyje šalia savininko vardo</li>
+        <li>Noredami siusti zinute, spauskite "Nauja zinute"</li>
+        <li>I "Gautos" pateks visos gautos zinutes</li>
+        <li>Naujas zinutes matysite su "Nauja" zyma</li>
+        <li>Galite atsakyti i zinute paspaude "Atsakyti"</li>
+        <li>Vartotojo ID rasite aukciono puslapyje salia savininko vardo</li>
     </ul>
 </div>
 

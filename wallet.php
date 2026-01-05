@@ -93,10 +93,10 @@ include 'includes/header.php';
                 $suma_class = $trans['suma'] >= 0 ? 'transaction-positive' : 'transaction-negative';
 
                 $tipas_map = [
-                    'papildymas' => '💰 Papildymas',
-                    'statymas' => '📉 Statymas',
-                    'grazinimas' => '🔄 Grąžinimas',
-                    'laimejimas' => '🎉 Laimėjimas'
+                    'papildymas' => 'Papildymas',
+                    'statymas' => 'Statymas',
+                    'grazinimas' => 'Grazinimas',
+                    'laimejimas' => 'Laimejimas'
                 ];
                 $tipas_text = $tipas_map[$trans['tipas']] ?? $trans['tipas'];
                 ?>
@@ -120,7 +120,7 @@ include 'includes/header.php';
 <?php endif; ?>
 
 <div class="alert alert-info mt-20">
-    <strong>ℹ️ Informacija apie piniginę:</strong>
+    <strong>Informacija apie pinigine:</strong>
     <ul style="margin-left: 20px; margin-top: 10px;">
         <li>Pradinis balansas po registracijos: 1000 €</li>
         <li>Papildyti balansą gali tik buhalteris arba administratorius</li>

@@ -104,7 +104,7 @@ $page_title = 'Moderavimas';
 include 'includes/header.php';
 ?>
 
-<h2>🛡️ Moderatoriaus skydelis</h2>
+<h2>Moderatoriaus skydelis</h2>
 
 <div class="admin-panel">
     <!-- Komentarų moderavimas -->
@@ -218,17 +218,17 @@ include 'includes/header.php';
         </table>
 
         <div class="alert alert-warning mt-20">
-            <strong>⚠️ Dėmesio:</strong> Aukcionų su statymais ištrinti negalima. Tai apsaugo vartotojų lėšas nuo netikėto praradimo.
+            <strong>Demesio:</strong> Aukcionu su statymais istrinti negalima. Tai apsaugo vartotoju lesas nuo netiketo praradimo.
         </div>
     </div>
 
     <!-- Grąžinimų valdymas -->
     <div class="admin-section">
-        <h3>💸 Rankinis pinigų grąžinimas</h3>
+        <h3>Rankinis pinigu grazinimas</h3>
 
         <div class="alert alert-info" style="margin-bottom: 20px;">
-            <strong>ℹ️ Informacija:</strong> Čia galite grąžinti pinigus statytojams už konkretų aukcioną. 
-            Sistema automatiškai tikrina, ar grąžinimas jau buvo atliktas.
+            <strong>Informacija:</strong> Cia galite grazinti pinigus statytojams uz konkretu aukciona. 
+            Sistema automatiskai tikrina, ar grazinimas jau buvo atliktas.
         </div>
 
         <form method="GET" action="" style="margin-bottom: 20px;">
@@ -246,7 +246,7 @@ include 'includes/header.php';
                         value="<?php echo isset($_GET['refund_auction_id']) ? intval($_GET['refund_auction_id']) : ''; ?>">
                 </div>
                 <button type="submit" class="btn btn-primary" style="margin-top: 24px;">
-                    🔍 Ieškoti statymų
+                    Ieskoti statymu
                 </button>
             </div>
         </form>
@@ -297,9 +297,9 @@ include 'includes/header.php';
                                     </td>
                                     <td>
                                         <?php if ($bid['is_refunded'] > 0): ?>
-                                            <span style="color: #27ae60; font-weight: bold;">✓ Grąžinta</span>
+                                            <span style="font-weight: bold;">Grazinta</span>
                                         <?php else: ?>
-                                            <span style="color: #e67e22; font-weight: bold;">⏳ Negrąžinta</span>
+                                            <span style="font-weight: bold;">Negrazinta</span>
                                         <?php endif; ?>
                                     </td>
                                     <td>
@@ -311,12 +311,12 @@ include 'includes/header.php';
                                                     name="refund_bid"
                                                     class="btn btn-success"
                                                     style="padding: 5px 10px;"
-                                                    onclick="return confirm('Ar tikrai norite grąžinti <?php echo format_money($bid['suma']); ?> vartotojui <?php echo htmlspecialchars($bid['vardas']); ?>?')">
-                                                    💸 Grąžinti
+                                                    onclick="return confirm('Ar tikrai norite grazinti <?php echo format_money($bid['suma']); ?> vartotojui <?php echo htmlspecialchars($bid['vardas']); ?>?')">
+                                                    Grazinti
                                                 </button>
                                             </form>
                                         <?php else: ?>
-                                            <span style="color: #999;">Jau grąžinta</span>
+                                            <span style="color: #999;">Jau grazinta</span>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
@@ -336,13 +336,13 @@ include 'includes/header.php';
 </div>
 
 <div class="alert alert-info">
-    <strong>ℹ️ Moderatoriaus teisės:</strong>
+    <strong>Moderatoriaus teises:</strong>
     <ul style="margin-left: 20px; margin-top: 10px;">
-        <li>Ištrinti netinkamus komentarus</li>
-        <li>Ištrinti probleminius aukcionus (be statymų)</li>
-        <li>Grąžinti pinigus statytojams už aukcionus</li>
-        <li>Peržiūrėti visus aukcionus ir komentarus</li>
-        <li>Visi veiksmai įrašomi į audito žurnalą</li>
+        <li>Istrinti netinkamus komentarus</li>
+        <li>Istrinti probleminius aukcionus (be statymu)</li>
+        <li>Grazinti pinigus statytojams uz aukcionus</li>
+        <li>Perziureti visus aukcionus ir komentarus</li>
+        <li>Visi veiksmai irasomi i audito zurnala</li>
     </ul>
 </div>
 

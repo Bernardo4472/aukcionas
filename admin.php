@@ -135,20 +135,20 @@ $page_title = 'Administravimas';
 include 'includes/header.php';
 ?>
 
-<h2>⚙️ Administratoriaus skydelis</h2>
+<h2>Administratoriaus skydelis</h2>
 
 <!-- Greitos nuorodos -->
-<div style="margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #3498db;">
-    <h3 style="margin-top: 0; margin-bottom: 15px;">🛠️ Administratoriaus įrankiai</h3>
+<div style="margin-bottom: 30px; padding: 20px; background: #f5f5f5; border-left: 3px solid #666;">
+    <h3 style="margin-top: 0; margin-bottom: 15px;">Administratoriaus irankiai</h3>
     <div style="display: flex; gap: 15px; flex-wrap: wrap;">
         <a href="ip_management.php" class="btn btn-primary" style="text-decoration: none;">
-            🔒 IP adresų valdymas
+            IP adresu valdymas
         </a>
         <a href="messages.php" class="btn btn-secondary" style="text-decoration: none;">
-            📬 Žinutės
+            Zinutes
         </a>
         <a href="wallet.php" class="btn btn-secondary" style="text-decoration: none;">
-            💰 Piniginė
+            Pinigine
         </a>
     </div>
 </div>
@@ -235,19 +235,19 @@ include 'includes/header.php';
 
     <!-- Vartotojų reitingai -->
     <div class="admin-section">
-        <h3>⭐ Vartotojų reitingai ir statistika</h3>
+        <h3>Vartotoju reitingai ir statistika</h3>
 
         <table class="users-table">
             <thead>
                 <tr>
                     <th>Vartotojas</th>
-                    <th>⭐ Reitingas</th>
-                    <th>📊 Atsiliepimai</th>
-                    <th>✓ Teigiami</th>
-                    <th>✗ Neigiami</th>
-                    <th>○ Neutralūs</th>
-                    <th>🏪 Parduota</th>
-                    <th>🛒 Nupirkta</th>
+                    <th>Reitingas</th>
+                    <th>Atsiliepimai</th>
+                    <th>Teigiami</th>
+                    <th>Neigiami</th>
+                    <th>Neutralus</th>
+                    <th>Parduota</th>
+                    <th>Nupirkta</th>
                     <th>Veiksmai</th>
                 </tr>
             </thead>
@@ -260,29 +260,29 @@ include 'includes/header.php';
                         </td>
                         <td>
                             <?php if ($ur['bendras_skaicius'] > 0): ?>
-                                <strong style="color: #f39c12; font-size: 1.1rem;">
+                                <strong>
                                     <?php echo number_format($ur['vidutinis_ivertinimas'], 2); ?> / 5.00
                                 </strong>
                             <?php else: ?>
-                                <span style="color: #999;">Nėra įvertinimų</span>
+                                <span style="color: #999;">Nera ivertinimu</span>
                             <?php endif; ?>
                         </td>
                         <td>
                             <strong><?php echo $ur['bendras_skaicius']; ?></strong>
                         </td>
-                        <td style="color: #27ae60;">
+                        <td>
                             <strong><?php echo $ur['teigiamu']; ?></strong>
                         </td>
-                        <td style="color: #e74c3c;">
+                        <td>
                             <strong><?php echo $ur['neigiamu']; ?></strong>
                         </td>
-                        <td style="color: #95a5a6;">
+                        <td>
                             <?php echo $ur['neutraliu']; ?>
                         </td>
-                        <td style="color: #27ae60;">
+                        <td>
                             <?php echo $ur['parduota']; ?>
                         </td>
-                        <td style="color: #3498db;">
+                        <td>
                             <?php echo $ur['nupirkta']; ?>
                         </td>
                         <td>
@@ -351,11 +351,11 @@ include 'includes/header.php';
 
     <!-- Grąžinimų valdymas -->
     <div class="admin-section">
-        <h3>💸 Rankinis pinigų grąžinimas</h3>
+        <h3>Rankinis pinigu grazinimas</h3>
 
         <div class="alert alert-info" style="margin-bottom: 20px;">
-            <strong>ℹ️ Informacija:</strong> Čia galite grąžinti pinigus statytojams už konkretų aukcioną. 
-            Sistema automatiškai tikrina, ar grąžinimas jau buvo atliktas.
+            <strong>Informacija:</strong> Cia galite grazinti pinigus statytojams uz konkretų aukciona. 
+            Sistema automatiskai tikrina, ar grazinimas jau buvo atliktas.
         </div>
 
         <form method="GET" action="" style="margin-bottom: 20px;">
@@ -373,7 +373,7 @@ include 'includes/header.php';
                         value="<?php echo isset($_GET['refund_auction_id']) ? intval($_GET['refund_auction_id']) : ''; ?>">
                 </div>
                 <button type="submit" class="btn btn-primary" style="margin-top: 24px;">
-                    🔍 Ieškoti statymų
+                    Ieskoti statymu
                 </button>
             </div>
         </form>
@@ -424,9 +424,9 @@ include 'includes/header.php';
                                     </td>
                                     <td>
                                         <?php if ($bid['is_refunded'] > 0): ?>
-                                            <span style="color: #27ae60; font-weight: bold;">✓ Grąžinta</span>
+                                            <span style="font-weight: bold;">Grazinta</span>
                                         <?php else: ?>
-                                            <span style="color: #e67e22; font-weight: bold;">⏳ Negrąžinta</span>
+                                            <span style="font-weight: bold;">Negrazinta</span>
                                         <?php endif; ?>
                                     </td>
                                     <td>
@@ -438,12 +438,12 @@ include 'includes/header.php';
                                                     name="refund_bid"
                                                     class="btn btn-success"
                                                     style="padding: 5px 10px;"
-                                                    onclick="return confirm('Ar tikrai norite grąžinti <?php echo format_money($bid['suma']); ?> vartotojui <?php echo htmlspecialchars($bid['vardas']); ?>?')">
-                                                    💸 Grąžinti
+                                                    onclick="return confirm('Ar tikrai norite grazinti <?php echo format_money($bid['suma']); ?> vartotojui <?php echo htmlspecialchars($bid['vardas']); ?>?')">
+                                                    Grazinti
                                                 </button>
                                             </form>
                                         <?php else: ?>
-                                            <span style="color: #999;">Jau grąžinta</span>
+                                            <span style="color: #999;">Jau grazinta</span>
                                         <?php endif; ?>
                                     </td>
                                 </tr>

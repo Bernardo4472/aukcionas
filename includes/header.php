@@ -10,7 +10,7 @@
     <nav class="navbar">
         <div class="container">
             <div class="nav-brand">
-                <a href="index.php">🏛️ Aukcionų portalas</a>
+                <a href="index.php">Aukcionu portalas</a>
             </div>
             <div class="nav-menu">
                 <?php if (is_logged_in()): ?>
@@ -25,9 +25,9 @@
                     <a href="create_auction.php">Sukurti aukcioną</a>
                     <a href="wallet.php">Piniginė</a>
                     <a href="messages.php">
-                        📬 Žinutės
+                        Zinutes
                         <?php if ($unread > 0): ?>
-                            <span style="background: #e74c3c; color: white; padding: 2px 6px; border-radius: 10px; font-size: 0.75rem;">
+                            <span style="background: #666; color: white; padding: 2px 6px; font-size: 0.75rem;">
                                 <?php echo $unread; ?>
                             </span>
                         <?php endif; ?>
@@ -48,9 +48,9 @@
 
                     <div class="nav-user">
                         <a href="profile.php?id=<?php echo $_SESSION['user_id']; ?>" style="text-decoration: none; color: inherit;">
-                            <span>👤 <?php echo htmlspecialchars($_SESSION['vardas']); ?></span>
+                            <span><?php echo htmlspecialchars($_SESSION['vardas']); ?></span>
                         </a>
-                        <span class="balance">💰 <?php
+                        <span class="balance"><?php
                             $user = get_logged_in_user();
                             echo format_money($user['balansas']);
                         ?></span>

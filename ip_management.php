@@ -157,11 +157,11 @@ include 'includes/header.php';
     </a>
 </div>
 
-<h2>🌐 IP Adresų Valdymas</h2>
+<h2>IP Adresu Valdymas</h2>
 
 <!-- IP blokavimo forma -->
 <div class="admin-section">
-    <h3>🚫 Užblokuoti IP adresą</h3>
+    <h3>Uzblokuoti IP adresa</h3>
 
     <form method="POST" action="" style="max-width: 600px;">
         <div class="form-group">
@@ -202,14 +202,14 @@ include 'includes/header.php';
         </div>
 
         <button type="submit" name="block_ip" class="btn btn-danger">
-            🚫 Užblokuoti IP
+            Uzblokuoti IP
         </button>
     </form>
 </div>
 
 <!-- Užblokuoti IP adresai -->
 <div class="admin-section">
-    <h3>📋 Užblokuoti IP adresai (<?php echo count($blocked_ips); ?>)</h3>
+    <h3>Uzblokuoti IP adresai (<?php echo count($blocked_ips); ?>)</h3>
 
     <?php if (empty($blocked_ips)): ?>
         <p style="color: #999;">Nėra užblokuotų IP adresų.</p>
@@ -252,8 +252,8 @@ include 'includes/header.php';
                             <a href="ip_management.php?unblock=<?php echo $block['id']; ?>"
                                class="btn btn-success"
                                style="padding: 5px 10px;"
-                               onclick="return confirm('Ar tikrai norite atblokuoti šį IP adresą?')">
-                                ✓ Atblokuoti
+                               onclick="return confirm('Ar tikrai norite atblokuoti si IP adresa?')">
+                                Atblokuoti
                             </a>
                         </td>
                     </tr>
@@ -265,7 +265,7 @@ include 'includes/header.php';
 
 <!-- IP statistika -->
 <div class="admin-section">
-    <h3>📊 IP Veiklos Statistika (Top 50)</h3>
+    <h3>IP Veiklos Statistika (Top 50)</h3>
 
     <table class="users-table">
         <thead>
@@ -292,7 +292,7 @@ include 'includes/header.php';
                         <a href="ip_management.php?ip=<?php echo urlencode($stat['ip_adresas']); ?>"
                            class="btn btn-primary"
                            style="padding: 5px 10px;">
-                            👁️ Peržiūrėti
+                            Perziureti
                         </a>
                     </td>
                 </tr>
@@ -304,12 +304,12 @@ include 'includes/header.php';
 <!-- Detali IP veikla -->
 <?php if ($selected_ip): ?>
     <div class="admin-section">
-        <h3>🔍 Detali veikla IP: <?php echo htmlspecialchars($selected_ip); ?></h3>
+        <h3>Detali veikla IP: <?php echo htmlspecialchars($selected_ip); ?></h3>
 
         <!-- Vartotojai iš šio IP -->
         <?php if (!empty($ip_users)): ?>
-            <div style="background: #fff3cd; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-                <h4 style="margin-bottom: 10px;">⚠️ Vartotojai iš šio IP (<?php echo count($ip_users); ?>):</h4>
+            <div style="background: #f5f5f5; padding: 15px; margin-bottom: 20px; border: 1px solid #ddd;">
+                <h4 style="margin-bottom: 10px;">Vartotojai is sio IP (<?php echo count($ip_users); ?>):</h4>
                 <ul style="margin-left: 20px;">
                     <?php foreach ($ip_users as $u): ?>
                         <li>
@@ -327,17 +327,17 @@ include 'includes/header.php';
         <!-- Pirkimų/Pardavimų statistika -->
         <div class="auction-meta" style="margin-bottom: 30px;">
             <div class="meta-item">
-                <div class="meta-label">🏪 Sukurtų aukcionų</div>
-                <div class="meta-value" style="color: #27ae60;"><?php echo count($ip_sales); ?></div>
+                <div class="meta-label">Sukurtu aukcionu</div>
+                <div class="meta-value"><?php echo count($ip_sales); ?></div>
             </div>
 
             <div class="meta-item">
-                <div class="meta-label">🛒 Laimėtų aukcionų</div>
-                <div class="meta-value" style="color: #3498db;"><?php echo count($ip_purchases); ?></div>
+                <div class="meta-label">Laimetu aukcionu</div>
+                <div class="meta-value"><?php echo count($ip_purchases); ?></div>
             </div>
 
             <div class="meta-item">
-                <div class="meta-label">📊 Statymų skaičius</div>
+                <div class="meta-label">Statymu skaicius</div>
                 <div class="meta-value">
                     <?php
                     $bid_count = 0;
@@ -352,8 +352,8 @@ include 'includes/header.php';
 
         <!-- Sukurti aukcionai (pardavimai) -->
         <?php if (!empty($ip_sales)): ?>
-            <div style="background: #d1ecf1; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-                <h4 style="margin-bottom: 15px;">🏪 Sukurti aukcionai iš šio IP (<?php echo count($ip_sales); ?>):</h4>
+            <div style="background: #f5f5f5; padding: 15px; margin-bottom: 20px; border: 1px solid #ddd;">
+                <h4 style="margin-bottom: 15px;">Sukurti aukcionai is sio IP (<?php echo count($ip_sales); ?>):</h4>
                 <div style="max-height: 400px; overflow-y: auto;">
                     <table class="users-table">
                         <thead>
@@ -397,8 +397,8 @@ include 'includes/header.php';
 
         <!-- Laimėti aukcionai (pirkimai) -->
         <?php if (!empty($ip_purchases)): ?>
-            <div style="background: #d4edda; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-                <h4 style="margin-bottom: 15px;">🛒 Laimėti aukcionai iš šio IP (<?php echo count($ip_purchases); ?>):</h4>
+            <div style="background: #f0f0f0; padding: 15px; margin-bottom: 20px; border: 1px solid #ddd;">
+                <h4 style="margin-bottom: 15px;">Laimeti aukcionai is sio IP (<?php echo count($ip_purchases); ?>):</h4>
                 <div style="max-height: 400px; overflow-y: auto;">
                     <table class="users-table">
                         <thead>

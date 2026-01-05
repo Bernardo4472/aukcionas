@@ -127,7 +127,7 @@ include 'includes/header.php';
 <!-- Aukciono informacija -->
 <div class="auction-details" style="max-width: 900px;">
     <div class="alert alert-info">
-        <strong>ℹ️ Svarbu:</strong> Galite redaguoti tik kai kuriuos laukus. Pradinė kaina ir statymo žingsnis negali būti keičiami po aukciono pradžios.
+        <strong>Svarbu:</strong> Galite redaguoti tik kai kuriuos laukus. Pradine kaina ir statymo zingsnis negali buti keiciami po aukciono pradzios.
     </div>
 
     <form method="POST" action="" enctype="multipart/form-data">
@@ -206,7 +206,7 @@ include 'includes/header.php';
 
 <!-- Nuotraukų valdymas -->
 <div class="auction-details" style="max-width: 900px; margin-top: 30px;">
-    <h3>📸 Aukciono nuotraukos</h3>
+    <h3>Aukciono nuotraukos</h3>
 
     <!-- Esamos nuotraukos -->
     <?php if (!empty($photos)): ?>
@@ -222,8 +222,8 @@ include 'includes/header.php';
                     <a href="edit_auction.php?id=<?php echo $auction_id; ?>&delete_photo=<?php echo $photo['id']; ?>"
                        class="btn btn-danger btn-block"
                        style="margin-top: 10px; padding: 5px;"
-                       onclick="return confirm('Ar tikrai norite ištrinti šią nuotrauką?')">
-                        🗑️ Ištrinti
+                       onclick="return confirm('Ar tikrai norite istrinti sia nuotrauka?')">
+                        Istrinti
                     </a>
                 </div>
             <?php endforeach; ?>
@@ -252,7 +252,7 @@ include 'includes/header.php';
             </div>
 
             <button type="submit" name="upload_photo" class="btn btn-success">
-                📤 Įkelti nuotrauką
+                Ikelti nuotrauka
             </button>
         </form>
     </div>

@@ -42,7 +42,7 @@ include 'includes/header.php';
                 type="text"
                 id="searchInput"
                 class="form-control"
-                placeholder="🔍 Ieškoti aukcionų..."
+                placeholder="Ieskoti aukcionu..."
                 onkeyup="searchAuctions()">
         </div>
         <div>
@@ -121,8 +121,8 @@ include 'includes/header.php';
                  data-endtime="<?php echo $auction['pabaigos_laikas']; ?>">
 
                 <?php if ($auction['pasleptas']): ?>
-                    <div style="background: #f39c12; color: white; padding: 5px 10px; border-radius: 5px; margin-bottom: 10px; text-align: center;">
-                        🔒 Paslėptas aukcionas
+                    <div style="background: #ccc; color: #333; padding: 5px 10px; margin-bottom: 10px; text-align: center; border: 1px solid #999;">
+                        Pasleptas aukcionas
                     </div>
                 <?php endif; ?>
 

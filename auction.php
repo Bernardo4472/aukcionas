@@ -92,17 +92,17 @@ include 'includes/header.php';
 
     <?php if ($is_owner): ?>
         <a href="edit_auction.php?id=<?php echo $auction_id; ?>" class="btn btn-primary">
-            ✏️ Redaguoti aukcioną
+            Redaguoti aukciona
         </a>
     <?php endif; ?>
 
     <?php if (!$is_owner): ?>
         <a href="messages.php?tab=new&to=<?php echo $auction['savininko_id']; ?>&subject=Dėl aukciono: <?php echo urlencode($auction['pavadinimas']); ?>&auction=<?php echo $auction_id; ?>"
            class="btn btn-primary">
-            📧 Susisiekti su pardavėju
+            Susisiekti su pardaveju
         </a>
         <a href="profile.php?id=<?php echo $auction['savininko_id']; ?>" class="btn btn-secondary">
-            👤 Pardavėjo profilis
+            Pardavejo profilis
         </a>
     <?php endif; ?>
 </div>
@@ -111,7 +111,7 @@ include 'includes/header.php';
 <div class="auction-details">
     <?php if ($auction['pasleptas']): ?>
         <div class="alert alert-warning">
-            🔒 Šis aukcionas yra paslėptas. Jį mato tik savininkas ir administratorius.
+            Sis aukcionas yra pasleptas. Ji mato tik savininkas ir administratorius.
         </div>
     <?php endif; ?>
 
@@ -126,8 +126,8 @@ include 'includes/header.php';
 
     <!-- Nuotraukų galerija -->
     <?php if (!empty($photos)): ?>
-        <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h4 style="color: #667eea; margin-bottom: 15px;">📸 Nuotraukos (<?php echo count($photos); ?>)</h4>
+        <div style="background: white; padding: 20px; margin-bottom: 20px; border: 1px solid #ddd;">
+            <h4 style="color: #333; margin-bottom: 15px;">Nuotraukos (<?php echo count($photos); ?>)</h4>
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
                 <?php foreach ($photos as $photo): ?>
                     <div style="border: 2px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
@@ -143,8 +143,8 @@ include 'includes/header.php';
         </div>
     <?php endif; ?>
 
-    <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-        <h4 style="color: #667eea; margin-bottom: 10px;">Aprašymas:</h4>
+    <div style="background: white; padding: 20px; margin-bottom: 20px; border: 1px solid #ddd;">
+        <h4 style="color: #333; margin-bottom: 10px;">Aprasymas:</h4>
         <p style="line-height: 1.8; white-space: pre-wrap;"><?php echo htmlspecialchars($auction['aprasymas']); ?></p>
     </div>
 
@@ -183,22 +183,22 @@ include 'includes/header.php';
     </div>
 
     <?php if (is_auction_active($auction)): ?>
-        <div style="background: #d4edda; padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center;">
-            <strong style="color: #155724; font-size: 1.1rem;">
-                ⏰ Aukcionas aktyvus!
+        <div style="background: #f0f0f0; padding: 15px; margin-top: 20px; text-align: center; border: 1px solid #ccc;">
+            <strong style="color: #333; font-size: 1.1rem;">
+                Aukcionas aktyvus
             </strong>
-            <div class="auction-timer" data-endtime="<?php echo $auction['pabaigos_laikas']; ?>" style="margin-top: 10px; font-size: 1.3rem; color: #155724;"></div>
+            <div class="auction-timer" data-endtime="<?php echo $auction['pabaigos_laikas']; ?>" style="margin-top: 10px; font-size: 1.3rem; color: #333;"></div>
         </div>
     <?php elseif (is_auction_upcoming($auction)): ?>
-        <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center;">
-            <strong style="color: #856404;">
-                ⏳ Aukcionas prasidės: <?php echo format_datetime($auction['pradzios_laikas']); ?>
+        <div style="background: #f5f5f5; padding: 15px; margin-top: 20px; text-align: center; border: 1px solid #ccc;">
+            <strong style="color: #333;">
+                Aukcionas prasides: <?php echo format_datetime($auction['pradzios_laikas']); ?>
             </strong>
         </div>
     <?php else: ?>
-        <div style="background: #f8d7da; padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center;">
-            <strong style="color: #721c24;">
-                ⛔ Aukcionas pasibaigė
+        <div style="background: #e0e0e0; padding: 15px; margin-top: 20px; text-align: center; border: 1px solid #999;">
+            <strong style="color: #333;">
+                Aukcionas pasibaige
             </strong>
             <?php if ($highest_bid): ?>
                 <div style="margin-top: 10px;">
@@ -257,7 +257,7 @@ include 'includes/header.php';
     </div>
 <?php elseif ($is_owner): ?>
     <div class="alert alert-info">
-        <strong>ℹ️ Informacija:</strong> Negalite statyti savo aukcione.
+        <strong>Informacija:</strong> Negalite statyti savo aukcione.
     </div>
 <?php endif; ?>
 
