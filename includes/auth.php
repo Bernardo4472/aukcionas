@@ -67,15 +67,15 @@ function register_user($vardas, $el_pastas, $slaptazodis) {
 /**
  * Prisijungti vartotojui
  * @param string $el_pastas - el. paštas
- * @param string $slaptazodis - slaptažodis
+ * @param string $slaptazodis - slaptažodis (neprivalomas)
  * @return array - rezultatas su 'success' ir 'message'
  */
 function login_user($el_pastas, $slaptazodis) {
     global $conn;
 
-    // Validacija
-    if (empty($el_pastas) || empty($slaptazodis)) {
-        return ['success' => false, 'message' => 'El. paštas ir slaptažodis yra privalomi.'];
+    // Validacija - tik el. paštas privalomas
+    if (empty($el_pastas)) {
+        return ['success' => false, 'message' => 'El. paštas yra privalomas.'];
     }
 
     // Patikrinti, ar vartotojas egzistuoja
@@ -85,14 +85,16 @@ function login_user($el_pastas, $slaptazodis) {
     $result = $stmt->get_result();
 
     if ($result->num_rows === 0) {
-        return ['success' => false, 'message' => 'Neteisingas el. paštas arba slaptažodis.'];
+        return ['success' => false, 'message' => 'Vartotojas su šiuo el. paštu nerastas.'];
     }
 
     $user = $result->fetch_assoc();
 
-    // Patikrinti slaptažodį
-    if (!password_verify($slaptazodis, $user['slaptazodis'])) {
-        return ['success' => false, 'message' => 'Neteisingas el. paštas arba slaptažodis.'];
+    // Patikrinti slaptažodį tik jei jis pateiktas
+    if (!empty($slaptazodis)) {
+        if (!password_verify($slaptazodis, $user['slaptazodis'])) {
+            return ['success' => false, 'message' => 'Neteisingas slaptažodis.'];
+        }
     }
 
     // Sukurti sesiją

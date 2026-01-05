@@ -70,14 +70,13 @@ include 'includes/header.php';
         </div>
 
         <div class="form-group">
-            <label for="slaptazodis">Slaptažodis <span style="color: red;">*</span></label>
+            <label for="slaptazodis">Slaptažodis</label>
             <input
                 type="password"
                 id="slaptazodis"
                 name="slaptazodis"
                 class="form-control"
-                placeholder="Įveskite slaptažodį"
-                required>
+                placeholder="Įveskite slaptažodį (neprivaloma)">
         </div>
 
         <button type="submit" class="btn btn-primary btn-block">
