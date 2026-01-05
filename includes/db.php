@@ -8,7 +8,7 @@
 // Duomenų bazės konfigūracija
 define('DB_HOST', 'localhost');
 define('DB_USER', 'aukcionas_user');
-define('DB_PASS', 'aukcionas123');
+define('DB_PASS', 'Aukcionas2025!');
 define('DB_NAME', 'aukcionas');
 
 // Sukurti prisijungimą prie MySQL duomenų bazės
