@@ -12,15 +12,6 @@ function confirmDelete(message) {
 // Formos validacija
 document.addEventListener('DOMContentLoaded', function() {
 
-    // Automatiškai uždaryti pranešimus po 5 sekundžių
-    const alerts = document.querySelectorAll('.alert');
-    alerts.forEach(alert => {
-        setTimeout(() => {
-            alert.style.opacity = '0';
-            setTimeout(() => alert.remove(), 300);
-        }, 5000);
-    });
-
     // Bid formos validacija
     const bidForm = document.getElementById('bidForm');
     if (bidForm) {
