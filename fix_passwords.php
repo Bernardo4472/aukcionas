@@ -7,9 +7,10 @@
 require_once 'includes/db.php';
 
 $password = "1";
-$hash = password_hash($password, PASSWORD_DEFAULT);
+// Use the exact hash from bcrypt-generator.com that we know works
+$hash = '$2a$12$tcB5MUbZjTRqPq7hA/Gen.A9Kt7JKA8GTNKXUXOVt82KEh/mF0s5a';
 
-echo "Generated hash for password '1': \n";
+echo "Using hash for password '1': \n";
 echo $hash . "\n\n";
 
 // Update all users
