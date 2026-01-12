@@ -197,6 +197,10 @@ include 'includes/header.php';
                             <span class="value price"><?php echo format_money($auction['dabartine_kaina']); ?></span>
                         </div>
                         <div class="auction-info-item">
+                            <span class="label">Vieta:</span>
+                            <span class="value"><?php echo htmlspecialchars($auction['vieta'] ?? 'Nenurodyta'); ?></span>
+                        </div>
+                        <div class="auction-info-item">
                             <span class="label">Pabaigos laikas:</span>
                             <span class="value"><?php echo format_datetime($auction['pabaigos_laikas']); ?></span>
                         </div>

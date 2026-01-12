@@ -156,6 +156,11 @@ include 'includes/header.php';
                     </div>
 
                     <div class="auction-info-item">
+                        <span class="label">Vieta:</span>
+                        <span class="value"><?php echo htmlspecialchars($auction['vieta'] ?? 'Nenurodyta'); ?></span>
+                    </div>
+
+                    <div class="auction-info-item">
                         <span class="label">Statusas:</span>
                         <span class="auction-status status-<?php echo $status; ?>">
                             <?php echo $status_text; ?>

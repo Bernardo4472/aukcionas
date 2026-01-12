@@ -180,6 +180,11 @@ include 'includes/header.php';
             <div class="meta-label">Pabaigos laikas</div>
             <div class="meta-value"><?php echo format_datetime($auction['pabaigos_laikas']); ?></div>
         </div>
+
+        <div class="meta-item">
+            <div class="meta-label">Vieta</div>
+            <div class="meta-value"><?php echo htmlspecialchars($auction['vieta'] ?? 'Nenurodyta'); ?></div>
+        </div>
     </div>
 
     <?php if (is_auction_active($auction)): ?>
