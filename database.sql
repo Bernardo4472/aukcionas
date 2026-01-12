@@ -168,22 +168,22 @@ CREATE TABLE IF NOT EXISTS ip_veikla (
 
 -- Demonstraciniai duomenys
 
--- Demonstraciniai vartotojai (visi slaptažodžiai: admin123, acc123, user123)
+-- Demonstraciniai vartotojai (slaptazodis: 1)
 INSERT INTO vartotojai (vardas, el_pastas, slaptazodis, role, balansas) VALUES
-('Administratorius', 'admin@ktu.lt', '$2y$12$3HZY.Pt69poo3EgJiuH6cOC5lXpLUItrtrlQi7VMnW0eoNtgBsV8e', 'admin', 5000.00),
-('Buhalteris', 'accountant@ktu.lt', '$2y$12$yAy1HeloS29BYAjeBwDmSO7R2wr4r/cCmXcYMymldpw8IsZaZ7O2S', 'accountant', 3000.00),
-('Vartotojas', 'user@ktu.lt', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 1000.00),
-('Moderatorius', 'moderator@ktu.lt', '$2y$12$3HZY.Pt69poo3EgJiuH6cOC5lXpLUItrtrlQi7VMnW0eoNtgBsV8e', 'moderator', 2000.00),
-('Jonas Jonaitis', 'jonas@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 500.00),
-('Petras Petraitis', 'petras@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 750.00),
--- Papildomi testavimo vartotojai (slaptažodis: user123)
-('Ona Onutė', 'ona@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 1200.00),
-('Antanas Antanaitis', 'antanas@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 800.00),
-('Greta Gretaitė', 'greta@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 950.00),
-('Lukas Lukauskas', 'lukas@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 1500.00),
-('Ieva Ievaitė', 'ieva@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 2000.00),
-('Darius Dariūnas', 'darius@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 650.00),
-('Rasa Rasaitė', 'rasa@example.com', '$2y$12$NStVAgYOOSDZ3R1xhH0j5e.U26fyVK42Dy9.k1rsehZeK2QlImxK6', 'user', 1100.00);
+('Administratorius', 'a@a', '$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'admin', 5000.00),
+('Buhalteris', 'b@b', '$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'accountant', 3000.00),
+('Vartotojas', 'u@u', '$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'user', 1000.00),
+('Moderatorius', 'm@m', '$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'moderator', 2000.00),
+('Jonas Jonaitis', 'j@j', '$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'user', 500.00),
+('Petras Petraitis', 'p@p', '$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'user', 750.00),
+-- Papildomi testavimo vartotojai (slaptazodis: 1)
+('Ona Onute', 'o@o', '$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'user', 1200.00),
+('Antanas Antanaitis', 'aa@aa', '$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'user', 800.00),
+('Greta Gretaite', 'g@g', '$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'user', 950.00),
+('Lukas Lukauskas', 'l@l', '$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'user', 1500.00),
+('Ieva Ievaite', 'i@i', '$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'user', 2000.00),
+('Darius Dariunas', 'd@d', '$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'user', 650.00),
+('Rasa Rasaite', 'r@r', '$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'user', 1100.00);
 
 -- Demonstraciniai aukcionai
 INSERT INTO aukcionai (pavadinimas, aprasymas, pradine_kaina, dabartine_kaina, bid_step, pradzios_laikas, pabaigos_laikas, pasleptas, vartotojo_id, busena) VALUES

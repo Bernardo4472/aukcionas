@@ -70,13 +70,14 @@ include 'includes/header.php';
         </div>
 
         <div class="form-group">
-            <label for="slaptazodis">Slaptažodis</label>
+            <label for="slaptazodis">Slaptazodis <span style="color: red;">*</span></label>
             <input
                 type="password"
                 id="slaptazodis"
                 name="slaptazodis"
                 class="form-control"
-                placeholder="Įveskite slaptažodį (neprivaloma)">
+                placeholder="Iveskite slaptazodi"
+                required>
         </div>
 
         <button type="submit" class="btn btn-primary btn-block">
@@ -89,12 +90,12 @@ include 'includes/header.php';
     </div>
 
     <div class="alert alert-info mt-20">
-        <strong>Demonstracinės paskyros:</strong>
+        <strong>Demonstracines paskyros:</strong>
         <ul style="margin-left: 20px; margin-top: 10px;">
-            <li><strong>Administratorius:</strong> admin@ktu.lt / admin123</li>
-            <li><strong>Buhalteris:</strong> accountant@ktu.lt / acc123</li>
-            <li><strong>Moderatorius:</strong> moderator@ktu.lt / admin123</li>
-            <li><strong>Vartotojas:</strong> user@ktu.lt / user123</li>
+            <li><strong>Administratorius:</strong> a@a / 1</li>
+            <li><strong>Buhalteris:</strong> b@b / 1</li>
+            <li><strong>Moderatorius:</strong> m@m / 1</li>
+            <li><strong>Vartotojas:</strong> u@u / 1</li>
         </ul>
     </div>
 </div>
