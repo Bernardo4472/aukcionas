@@ -208,7 +208,7 @@ function place_bid($auction_id, $user_id, $bid_amount) {
 
             // Įrašyti grąžinimo transakciją
             $stmt = $conn->prepare("INSERT INTO transakcijos (vartotojo_id, suma, tipas, aprasymas) VALUES (?, ?, 'grazinimas', ?)");
-            $description = 'Automatinis grąžinimas iš aukciono #' . $auction_id;
+            $description = 'Automatinis grąžinimas už statymas #' . $previous_bid['id'] . ' aukcione #' . $auction_id;
             $stmt->bind_param("ids", $previous_bid['vartotojo_id'], $previous_bid['suma'], $description);
             $stmt->execute();
         }
