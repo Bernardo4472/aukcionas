@@ -126,7 +126,7 @@ include 'includes/header.php';
                     </div>
                 <?php endif; ?>
 
-                <h3><?php echo htmlspecialchars($auction['pavadinimas']); ?></h3>
+                <h3><?php echo htmlspecialchars($auction['pavadinimas']); ?> <small style="color: #888; font-weight: normal;">(ID: <?php echo $auction['id']; ?>)</small></h3>
 
                 <div class="auction-description">
                     <?php echo htmlspecialchars(substr($auction['aprasymas'], 0, 150)) . (strlen($auction['aprasymas']) > 150 ? '...' : ''); ?>
@@ -146,13 +146,13 @@ include 'includes/header.php';
                     <?php if ($highest_bid): ?>
                         <div class="auction-info-item">
                             <span class="label">Aukščiausias statytojas:</span>
-                            <span class="value"><?php echo htmlspecialchars($highest_bid['vardas']); ?></span>
+                            <span class="value"><?php echo htmlspecialchars($highest_bid['vardas']); ?> (ID: <?php echo $highest_bid['vartotojo_id']; ?>)</span>
                         </div>
                     <?php endif; ?>
 
                     <div class="auction-info-item">
                         <span class="label">Savininkas:</span>
-                        <span class="value"><?php echo htmlspecialchars($auction['savininkas']); ?></span>
+                        <span class="value"><?php echo htmlspecialchars($auction['savininkas']); ?> (ID: <?php echo $auction['vartotojo_id']; ?>)</span>
                     </div>
 
                     <div class="auction-info-item">

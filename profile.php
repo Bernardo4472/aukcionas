@@ -118,9 +118,8 @@ include 'includes/header.php';
 <div class="wallet-card">
     <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 20px;">
         <div>
-            <h2><?php echo htmlspecialchars($profile_user['vardas']); ?></h2>
+            <h2><?php echo htmlspecialchars($profile_user['vardas']); ?> <small style="font-weight: normal;">(ID: <?php echo $profile_user['id']; ?>)</small></h2>
             <p>
-                <strong>Vartotojo ID:</strong> <?php echo $profile_user['id']; ?><br>
                 <strong>Role:</strong>
                 <span class="role-badge role-<?php echo $profile_user['role']; ?>" style="margin-left: 5px;">
                     <?php

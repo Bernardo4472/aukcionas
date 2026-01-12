@@ -148,6 +148,7 @@ include 'includes/header.php';
                             <strong>
                                 <?php echo $tab === 'inbox' ? 'Nuo: ' : 'Kam: '; ?>
                                 <?php echo htmlspecialchars($tab === 'inbox' ? $msg['siuntejo_vardas'] : $msg['gavejo_vardas']); ?>
+                                (ID: <?php echo $tab === 'inbox' ? $msg['siuntejas_id'] : $msg['gavejas_id']; ?>)
                             </strong>
                             <?php if (!$msg['perskaitytas'] && $tab === 'inbox'): ?>
                                 <span style="background: #666; color: white; padding: 2px 8px; font-size: 0.8rem; margin-left: 10px;">
@@ -168,7 +169,7 @@ include 'includes/header.php';
 
                     <?php if ($msg['aukciono_pavadinimas']): ?>
                         <div style="margin-top: 10px; padding: 10px; background: #f5f5f5; border: 1px solid #ddd;">
-                            Susijes aukcionas: <strong><?php echo htmlspecialchars($msg['aukciono_pavadinimas']); ?></strong>
+                            Susijes aukcionas: <strong><?php echo htmlspecialchars($msg['aukciono_pavadinimas']); ?></strong> (ID: <?php echo $msg['aukciono_id']; ?>)
                             <a href="auction.php?id=<?php echo $msg['aukciono_id']; ?>" class="btn btn-primary" style="padding: 5px 10px; margin-left: 10px;">
                                 Perziureti
                             </a>

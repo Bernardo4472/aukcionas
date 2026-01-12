@@ -48,7 +48,7 @@
 
                     <div class="nav-user">
                         <a href="profile.php?id=<?php echo $_SESSION['user_id']; ?>" style="text-decoration: none; color: inherit;">
-                            <span><?php echo htmlspecialchars($_SESSION['vardas']); ?></span>
+                            <span><?php echo htmlspecialchars($_SESSION['vardas']); ?> (ID: <?php echo $_SESSION['user_id']; ?>)</span>
                         </a>
                         <span class="balance"><?php
                             $user = get_logged_in_user();

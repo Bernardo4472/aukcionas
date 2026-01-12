@@ -115,7 +115,7 @@ include 'includes/header.php';
         </div>
     <?php endif; ?>
 
-    <h2><?php echo htmlspecialchars($auction['pavadinimas']); ?></h2>
+    <h2><?php echo htmlspecialchars($auction['pavadinimas']); ?> <small style="color: #888; font-weight: normal;">(ID: <?php echo $auction_id; ?>)</small></h2>
 
     <div style="color: #666; margin-bottom: 20px;">
         <strong>Savininkas:</strong> <?php echo htmlspecialchars($auction['savininkas']); ?> (ID: <?php echo $auction['savininko_id']; ?>)
@@ -273,7 +273,7 @@ include 'includes/header.php';
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <div class="bid-user">
-                            <?php echo htmlspecialchars($bid['vardas']); ?>
+                            <?php echo htmlspecialchars($bid['vardas']); ?> (ID: <?php echo $bid['vartotojo_id']; ?>)
                             <?php if ($index === 0): ?>
                                 <span style="background: #27ae60; color: white; padding: 3px 8px; border-radius: 3px; margin-left: 10px; font-size: 0.85rem;">
                                     Aukščiausias
@@ -317,7 +317,7 @@ include 'includes/header.php';
         <?php foreach ($comments as $comment): ?>
             <div class="comment">
                 <div class="comment-header">
-                    <span class="comment-author"><?php echo htmlspecialchars($comment['vardas']); ?></span>
+                    <span class="comment-author"><?php echo htmlspecialchars($comment['vardas']); ?> (ID: <?php echo $comment['vartotojo_id']; ?>)</span>
                     <span class="comment-time"><?php echo format_datetime($comment['data_laikas']); ?></span>
                 </div>
                 <div class="comment-text"><?php echo nl2br(htmlspecialchars($comment['tekstas'])); ?></div>
