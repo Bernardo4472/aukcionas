@@ -5,6 +5,9 @@
  * Autorius: Rokas Kaziulis
  */
 
+// Nustatyti laiko zoną (Lietuva)
+date_default_timezone_set('Europe/Vilnius');
+
 // Duomenų bazės konfigūracija
 define('DB_HOST', 'localhost');
 define('DB_USER', 'aukcionas_user');

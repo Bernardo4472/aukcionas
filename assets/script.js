@@ -103,7 +103,9 @@ function updateAuctionTimers() {
     const timers = document.querySelectorAll('.auction-timer');
 
     timers.forEach(timer => {
-        const endTime = new Date(timer.dataset.endtime).getTime();
+        // Fix: Replace space with 'T' to ensure proper parsing as local time
+        const endTimeStr = timer.dataset.endtime.replace(' ', 'T');
+        const endTime = new Date(endTimeStr).getTime();
         const now = new Date().getTime();
         const distance = endTime - now;
 
