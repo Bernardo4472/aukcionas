@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS atsiliepimai (
     aukciono_id INT,
     ivertinimas TINYINT NOT NULL CHECK (ivertinimas BETWEEN 1 AND 5),
     komentaras TEXT,
-    tipas ENUM('teigiam','neigiamas','neutralus') NOT NULL,
+    tipas ENUM('teigiamas','neigiamas','neutralus') NOT NULL,
     data_laikas DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (nuo_vartotojo_id) REFERENCES vartotojai(id) ON DELETE CASCADE,
     FOREIGN KEY (apie_vartotoja_id) REFERENCES vartotojai(id) ON DELETE CASCADE,
