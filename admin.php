@@ -13,6 +13,9 @@ require_once 'includes/functions.php';
 // Patikrinti, ar vartotojas yra admin
 require_role('admin');
 
+// Atnaujinti aukcionų statusus (kad pardavimai/pirkimai būtų teisingi)
+update_auction_statuses();
+
 // Apdoroti vartotojo rolės keitimą
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_role'])) {
     $user_id = intval($_POST['user_id']);

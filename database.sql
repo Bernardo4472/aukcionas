@@ -225,6 +225,19 @@ INSERT INTO audit_log (vartotojo_id, veiksmas, aprasymas) VALUES
 (2, 'Balansas papildytas', 'Buhalteris papildė vartotojo #3 balansą 500 EUR'),
 (4, 'Komentaras ištrintas', 'Moderatorius ištrynė netinkamą komentarą #15');
 
+-- Demonstraciniai atsiliepimai
+INSERT INTO atsiliepimai (nuo_vartotojo_id, apie_vartotoja_id, aukciono_id, ivertinimas, komentaras, tipas) VALUES
+(5, 3, 1, 5, 'Puikus pardavėjas! Greitas pristatymas ir prekė atitiko aprašymą.', 'teigiamas'),
+(6, 3, 4, 4, 'Gera komunikacija, rekomenduoju.', 'teigiamas'),
+(3, 5, 2, 5, 'Patikimas pirkėjas, greitai sumokėjo.', 'teigiamas'),
+(3, 6, NULL, 3, 'Viskas gerai, bet galėjo greičiau atsakyti.', 'neutralus'),
+(5, 6, 3, 4, 'Geras pardavėjas.', 'teigiamas'),
+(6, 5, 1, 5, 'Labai patikimas, rekomenduoju!', 'teigiamas'),
+(7, 3, NULL, 5, 'Nuostabus pardavėjas!', 'teigiamas'),
+(8, 5, 2, 2, 'Prekė buvo kiek kitokia nei aprašyme.', 'neigiamas'),
+(9, 6, NULL, 4, 'Viskas tvarkoje.', 'teigiamas'),
+(10, 3, 1, 5, 'Ačiū už greitą siuntimą!', 'teigiamas');
+
 -- Demonstracinė IP veikla (įvairūs scenarijai)
 INSERT INTO ip_veikla (vartotojo_id, ip_adresas, veiksmas, aprasymas, data_laikas) VALUES
 -- Scenario 1: Normalus vieno vartotojo aktyvumas iš namų

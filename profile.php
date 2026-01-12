@@ -14,6 +14,9 @@ require_once 'includes/extended_functions.php';
 // Patikrinti, ar vartotojas prisijungęs
 require_login();
 
+// Atnaujinti aukcionų statusus
+update_auction_statuses();
+
 // Gauti profilio vartotojo ID
 $profile_user_id = isset($_GET['id']) ? intval($_GET['id']) : $_SESSION['user_id'];
 
