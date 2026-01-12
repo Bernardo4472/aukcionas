@@ -14,8 +14,8 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.5;
-    color: #333;
-    background: #f5f5f5;
+    color: #000;
+    background: #ffff00;
     min-height: 100vh;
     display: flex;
     flex-direction: column;

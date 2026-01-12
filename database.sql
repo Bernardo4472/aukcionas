@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS aukcionai (
     bid_step DECIMAL(10, 2) NOT NULL DEFAULT 5.00,
     pradzios_laikas DATETIME NOT NULL,
     pabaigos_laikas DATETIME NOT NULL,
+    vieta ENUM('Vilnius', 'Kaunas', 'Klaipėda') DEFAULT 'Vilnius',
     pasleptas BOOLEAN DEFAULT FALSE,
     vartotojo_id INT NOT NULL,
     busena ENUM('aktyvus', 'pasibaiges', 'atsauktas') DEFAULT 'aktyvus',
@@ -36,7 +37,8 @@ CREATE TABLE IF NOT EXISTS aukcionai (
     FOREIGN KEY (vartotojo_id) REFERENCES vartotojai(id) ON DELETE CASCADE,
     INDEX idx_busena (busena),
     INDEX idx_pabaigos_laikas (pabaigos_laikas),
-    INDEX idx_vartotojo_id (vartotojo_id)
+    INDEX idx_vartotojo_id (vartotojo_id),
+    INDEX idx_vieta (vieta)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Statymų lentelė
@@ -186,14 +188,14 @@ INSERT INTO vartotojai (vardas, el_pastas, slaptazodis, role, balansas) VALUES
 ('Rasa Rasaite', 'r@r', '$2a$12$tcB5MUbZjTRqPq7hA/Gen.A9Kt7JKA8GTNKXUXOVt82KEh/mF0s5a', 'user', 1100.00);
 
 -- Demonstraciniai aukcionai
-INSERT INTO aukcionai (pavadinimas, aprasymas, pradine_kaina, dabartine_kaina, bid_step, pradzios_laikas, pabaigos_laikas, pasleptas, vartotojo_id, busena) VALUES
-('iPhone 15 Pro Max', 'Naujas, naudotas tik 2 mėnesius. Su dėklu ir apsaugine plėvele.', 800.00, 850.00, 10.00, '2026-01-10 10:00:00', '2026-02-05 18:00:00', FALSE, 3, 'aktyvus'),
-('Samsung Galaxy S24', 'Originalus, su visais priedais. Puiki būklė.', 600.00, 650.00, 15.00, '2026-01-11 12:00:00', '2026-02-10 20:00:00', FALSE, 5, 'aktyvus'),
-('MacBook Pro 2024', '16 colių M3 Max, 32GB RAM, 1TB SSD. Idealus programuotojams.', 2000.00, 2100.00, 50.00, '2026-01-08 09:00:00', '2026-02-15 21:00:00', FALSE, 6, 'aktyvus'),
-('Sony PlayStation 5', 'Nenaudotas, dar su garantija. 2 pulteliai.', 400.00, 450.00, 10.00, '2026-01-05 14:00:00', '2026-02-01 17:00:00', FALSE, 3, 'aktyvus'),
-('Vintage laikrodis Rolex', 'Kolekcinė prekė. Autentiškas, su sertifikatu.', 5000.00, 5000.00, 100.00, '2026-01-12 08:00:00', '2026-02-20 23:59:59', FALSE, 5, 'aktyvus'),
-('Dell XPS 13', 'Nešiojamas kompiuteris, i7 procesorius, 16GB RAM.', 900.00, 900.00, 20.00, '2026-01-09 10:00:00', '2026-02-08 19:00:00', FALSE, 6, 'aktyvus'),
-('Slaptas aukcionas', 'Šis aukcionas matomas tik savininkui ir administratoriui.', 100.00, 100.00, 5.00, '2026-01-07 15:00:00', '2026-02-12 16:00:00', TRUE, 3, 'aktyvus');
+INSERT INTO aukcionai (pavadinimas, aprasymas, pradine_kaina, dabartine_kaina, bid_step, pradzios_laikas, pabaigos_laikas, vieta, pasleptas, vartotojo_id, busena) VALUES
+('iPhone 15 Pro Max', 'Naujas, naudotas tik 2 mėnesius. Su dėklu ir apsaugine plėvele.', 800.00, 850.00, 10.00, '2026-01-10 10:00:00', '2026-02-05 18:00:00', 'Vilnius', FALSE, 3, 'aktyvus'),
+('Samsung Galaxy S24', 'Originalus, su visais priedais. Puiki būklė.', 600.00, 650.00, 15.00, '2026-01-11 12:00:00', '2026-02-10 20:00:00', 'Kaunas', FALSE, 5, 'aktyvus'),
+('MacBook Pro 2024', '16 colių M3 Max, 32GB RAM, 1TB SSD. Idealus programuotojams.', 2000.00, 2100.00, 50.00, '2026-01-08 09:00:00', '2026-02-15 21:00:00', 'Klaipėda', FALSE, 6, 'aktyvus'),
+('Sony PlayStation 5', 'Nenaudotas, dar su garantija. 2 pulteliai.', 400.00, 450.00, 10.00, '2026-01-05 14:00:00', '2026-02-01 17:00:00', 'Vilnius', FALSE, 3, 'aktyvus'),
+('Vintage laikrodis Rolex', 'Kolekcinė prekė. Autentiškas, su sertifikatu.', 5000.00, 5000.00, 100.00, '2026-01-12 08:00:00', '2026-02-20 23:59:59', 'Kaunas', FALSE, 5, 'aktyvus'),
+('Dell XPS 13', 'Nešiojamas kompiuteris, i7 procesorius, 16GB RAM.', 900.00, 900.00, 20.00, '2026-01-09 10:00:00', '2026-02-08 19:00:00', 'Klaipėda', FALSE, 6, 'aktyvus'),
+('Slaptas aukcionas', 'Šis aukcionas matomas tik savininkui ir administratoriui.', 100.00, 100.00, 5.00, '2026-01-07 15:00:00', '2026-02-12 16:00:00', 'Vilnius', TRUE, 3, 'aktyvus');
 
 -- Demonstraciniai statymai
 INSERT INTO statymai (aukciono_id, vartotojo_id, suma, data_laikas) VALUES
@@ -321,3 +323,6 @@ INSERT INTO ip_blokavimai (ip_adresas, priezastis, užblokavo_admin_id, galioja_
 ('45.142.212.61', 'Daug nesėkmingų prisijungimo bandymų - galimas bruteforce', 1, '2025-12-30 23:59:59', TRUE),
 ('103.45.67.89', 'Spam žinutės', 1, NULL, TRUE),
 ('185.220.101.45', 'Sukčiavimo bandymai', 1, '2026-01-15 00:00:00', TRUE);
+
+-- Jei duomenų bazė jau egzistuoja, pridėti vieta stulpelį:
+-- ALTER TABLE aukcionai ADD COLUMN vieta ENUM('Vilnius', 'Kaunas', 'Klaipėda') DEFAULT 'Vilnius' AFTER pabaigos_laikas;

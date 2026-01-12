@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bid_step = floatval($_POST['bid_step']);
     $pradzios_laikas = clean_input($_POST['pradzios_laikas']);
     $pabaigos_laikas = clean_input($_POST['pabaigos_laikas']);
+    $vieta = clean_input($_POST['vieta']);
     $pasleptas = isset($_POST['pasleptas']) ? 1 : 0;
     $user_id = $_SESSION['user_id'];
 
@@ -52,11 +53,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Pabaigos laikas turi būti ateityje.';
     }
 
+    $allowed_cities = ['Vilnius', 'Kaunas', 'Klaipėda'];
+    if (empty($vieta) || !in_array($vieta, $allowed_cities)) {
+        $errors[] = 'Pasirinkite galiojančią vietą.';
+    }
+
     // Jei nėra klaidų, sukurti aukcioną
     if (empty($errors)) {
-        $stmt = $conn->prepare("INSERT INTO aukcionai (pavadinimas, aprasymas, pradine_kaina, dabartine_kaina, bid_step, pradzios_laikas, pabaigos_laikas, pasleptas, vartotojo_id, busena)
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'aktyvus')");
-        $stmt->bind_param("ssdddssii", $pavadinimas, $aprasymas, $pradine_kaina, $pradine_kaina, $bid_step, $pradzios_laikas, $pabaigos_laikas, $pasleptas, $user_id);
+        $stmt = $conn->prepare("INSERT INTO aukcionai (pavadinimas, aprasymas, pradine_kaina, dabartine_kaina, bid_step, pradzios_laikas, pabaigos_laikas, vieta, pasleptas, vartotojo_id, busena)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'aktyvus')");
+        $stmt->bind_param("ssdddsssii", $pavadinimas, $aprasymas, $pradine_kaina, $pradine_kaina, $bid_step, $pradzios_laikas, $pabaigos_laikas, $vieta, $pasleptas, $user_id);
 
         if ($stmt->execute()) {
             $auction_id = $conn->insert_id;
@@ -183,6 +189,20 @@ include 'includes/header.php';
                     required
                     value="<?php echo isset($_POST['pabaigos_laikas']) ? $_POST['pabaigos_laikas'] : date('Y-m-d\TH:i', strtotime('+7 days')); ?>">
             </div>
+        </div>
+
+        <div class="form-group">
+            <label for="vieta">Vieta <span style="color: red;">*</span></label>
+            <select
+                id="vieta"
+                name="vieta"
+                class="form-control"
+                required>
+                <option value="">-- Pasirinkite miestą --</option>
+                <option value="Vilnius" <?php echo (isset($_POST['vieta']) && $_POST['vieta'] === 'Vilnius') ? 'selected' : ''; ?>>Vilnius</option>
+                <option value="Kaunas" <?php echo (isset($_POST['vieta']) && $_POST['vieta'] === 'Kaunas') ? 'selected' : ''; ?>>Kaunas</option>
+                <option value="Klaipėda" <?php echo (isset($_POST['vieta']) && $_POST['vieta'] === 'Klaipėda') ? 'selected' : ''; ?>>Klaipėda</option>
+            </select>
         </div>
 
         <div class="form-group">
